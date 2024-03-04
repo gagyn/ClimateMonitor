@@ -1,6 +1,6 @@
 import adafruit_dht  # type: ignore
-from RaspberrySensor.models.record import Record
-from RaspberrySensor.sensor.configuration_service import ConfigurationService
+from models.record import Record
+from sensor.configuration_service import ConfigurationService
 
 
 class SensorReader:

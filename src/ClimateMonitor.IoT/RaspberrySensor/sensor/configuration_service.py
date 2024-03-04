@@ -1,4 +1,4 @@
-from RaspberrySensor.models.sensors_configuration import SensorsConfiguration
+from models.sensors_configuration import SensorsConfiguration
 
 
 class ConfigurationService:

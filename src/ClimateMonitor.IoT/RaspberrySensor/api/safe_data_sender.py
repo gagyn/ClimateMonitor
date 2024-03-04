@@ -1,7 +1,7 @@
 import json
 import requests
-from RaspberrySensor.models.app_configuration import AppConfiguration
-from RaspberrySensor.models.record import Record
+from models.app_configuration import AppConfiguration
+from models.record import Record
 
 
 class SafeDataSender:
