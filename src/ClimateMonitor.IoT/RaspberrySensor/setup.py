@@ -1,12 +1,9 @@
 import json
 import os
-import threading
-import time
 from api.configuration_reciever import ConfigurationReciever
-from api.safe_data_sender import SafeDataSender
-from models.app_configuration import AppConfiguration, read_configuration_file
+from models.app_configuration import read_configuration_file
 from models.sensors_configuration import SensorsConfiguration
-from schedule import schedule
+from schedule_manager.schedule_manager import ScheduleManager
 from sensor.configuration_service import ConfigurationService
 from sensor.sensor_reader import SensorReader
 
@@ -18,22 +15,6 @@ from sensor.sensor_reader import SensorReader
 #
 # TODO:
 # https://schedule.readthedocs.io/en/stable/exception-handling.html
-
-
-def read_and_save(sensor_reader: SensorReader, safe_data_sender: SafeDataSender):
-    record = sensor_reader.read_dht11_sensor_data()
-    safe_data_sender.send_record(record)
-
-
-def schedule_handler(
-    app_config: AppConfiguration, config_service: ConfigurationService
-):
-    sensor_reader = SensorReader(config_service)
-    safe_data_sender = SafeDataSender(app_config)
-    cron = "* * * * *"
-    schedule.every().crontab_expression(cron).do(
-        read_and_save, sensor_reader, safe_data_sender
-    )
 
 
 if __name__ == "__main__":
@@ -50,7 +31,11 @@ if __name__ == "__main__":
     configuration_reciver = ConfigurationReciever(app_config, config_service)
     configuration_reciver.connect()
 
-    schedule_handler(app_config, config_service)
+    sensor_reader = SensorReader(config_service)
+    schedule_manager = ScheduleManager(app_config, config_service, sensor_reader)
+    configuration_reciver.add_observer(config_service)
+    configuration_reciver.add_observer(schedule_manager)
+    schedule_manager.start_executing()
 
     # Start a thread to establish websocket connection for config updates
     # websocket_thread = threading.Thread(target=)
@@ -65,6 +50,3 @@ if __name__ == "__main__":
     # sensor_data_thread.start()
 
     # Keep the main thread running
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
