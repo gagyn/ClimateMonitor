@@ -24,7 +24,7 @@ class ScheduleManager(ConfigurationObserver):
         self._sensor_reader = sensor_reader
         self._app_configuration = app_configuration
 
-    def start_executing():
+    def start_executing(self):
         while True:
             schedule.run_pending()
             time.sleep(1)

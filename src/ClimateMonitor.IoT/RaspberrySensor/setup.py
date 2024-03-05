@@ -27,8 +27,8 @@ if __name__ == "__main__":
         with open(sensors_config_filename, "r") as file:
             sensors_config = json.load(file)
 
-    config_service = ConfigurationService()
-    configuration_reciver = ConfigurationReciever(app_config, config_service)
+    config_service = ConfigurationService(sensors_config)
+    configuration_reciver = ConfigurationReciever(app_config)
     configuration_reciver.connect()
 
     sensor_reader = SensorReader(config_service)
