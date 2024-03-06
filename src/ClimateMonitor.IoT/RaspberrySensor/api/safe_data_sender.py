@@ -7,7 +7,7 @@ from models.record import Record
 class SafeDataSender:
     _app_configuration: AppConfiguration
 
-    def __init__(self, appConfiguration: AppConfiguration) -> None:
+    def __init__(self, appConfiguration: AppConfiguration):
         self._app_configuration = appConfiguration
 
     def send_record(self, record: Record) -> None:
@@ -26,6 +26,6 @@ class SafeDataSender:
             print("Exception occurred while sending data to API:", str(e))
             self._backup_request_on_fail(record)
 
-    def _backup_request_on_fail(self, record: Record) -> None:
+    def _backup_request_on_fail(self, record: Record):
         with open("failed_data.txt", "a") as file:
-            file.write(f"{record.temperature}|{record.humidity}\n")
+            file.write(f"{record.temperature}|{record.humidity}|{record.sensor_id}\n")

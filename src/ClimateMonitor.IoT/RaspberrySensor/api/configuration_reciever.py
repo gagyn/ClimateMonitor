@@ -1,5 +1,4 @@
 import websockets
-from websockets.sync.client import connect
 from models.app_configuration import AppConfiguration
 from models.sensors_configuration import SensorsConfiguration
 
@@ -18,7 +17,7 @@ class ConfigurationReciever:
     def __init__(
         self,
         app_configuration: AppConfiguration,
-    ) -> None:
+    ):
         self._app_configuration = app_configuration
 
     async def connect(self) -> None:
@@ -30,7 +29,7 @@ class ConfigurationReciever:
             except websockets.ConnectionClosed:
                 continue
 
-    async def _handler(self, websocket) -> None:
+    async def _handler(self, websocket):
         async for message in websocket:
             self._notify_observers(message)
 
@@ -40,6 +39,6 @@ class ConfigurationReciever:
     def remove_observer(self, observer: ConfigurationObserver) -> None:
         self._observers.remove(observer)
 
-    async def _notify_observers(self, message: any) -> None:
+    async def _notify_observers(self, message: any):
         for observer in self._observers:
             observer.handle_configuration_update(message)

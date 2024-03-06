@@ -8,7 +8,7 @@ class AppConfiguration:
         self.websocketAddress = websocketAddress
 
 
-def read_configuration_file(file_path):
+def read_configuration_file(file_path) -> None:
     with open(file_path, "r") as file:
         config_data = json.load(file)
         return AppConfiguration(
