@@ -1,5 +1,5 @@
 {
-  "baseApiUrl": "https://example.com/api",
+  "baseApiUrl": "https://localhost:44377/api",
   "uploadDataPath": "/record",
-  "websocketAddress": "ws://example.com"
+  "websocketAddress": "ws://localhost:44377/ws"
 }

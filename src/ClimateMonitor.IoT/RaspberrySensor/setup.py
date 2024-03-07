@@ -1,3 +1,4 @@
+import asyncio
 from api.configuration_reciever import ConfigurationReciever
 from api.safe_data_sender import SafeDataSender
 from models.app_configuration import read_configuration_file
@@ -15,12 +16,15 @@ from sensor.sensor_reader import SensorReader
 
 
 if __name__ == "__main__":
-    config_file_path = "config.json"
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    config_file_path = "RaspberrySensor/config.json"
     app_config = read_configuration_file(config_file_path)
 
     config_service = ConfigurationService()
     configuration_reciver = ConfigurationReciever(app_config)
-    configuration_reciver.connect()
+    asyncio.run(configuration_reciver.connect())
 
     sensor_reader = SensorReader(config_service)
     safe_data_sender = SafeDataSender(app_config)

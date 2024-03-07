@@ -42,9 +42,7 @@ class ScheduleManager(ConfigurationObserver):
             | new_configuration.pins_dht22
             | new_configuration.pins_dallas_18b20
         ):
-            self._schedule_handler(
-                sensor_id, self._app_configuration, self._configuration_service
-            )
+            self._schedule_handler(sensor_id, self._configuration_service)
 
     def _schedule_handler(
         self,
