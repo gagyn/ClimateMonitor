@@ -25,16 +25,20 @@ class ConfigurationReciever:
             async for websocket in websockets.connect(
                 self._app_configuration.websocketAddress
             ):
-                await websocket.send("connected")
+                print("Websocket connected.")
+                await websocket.send(self._app_configuration.deviceId)
+                print("DeviceId sent.")
                 try:
                     await self._handler(websocket)
                 except websockets.ConnectionClosed:
                     continue
+
         except Exception as e:
             print(e)
 
     async def _handler(self, websocket):
         async for message in websocket:
+            print("Got message.")
             self._notify_observers(message)
 
     def add_observer(self, observer: ConfigurationObserver) -> None:
@@ -43,6 +47,6 @@ class ConfigurationReciever:
     def remove_observer(self, observer: ConfigurationObserver) -> None:
         self._observers.remove(observer)
 
-    async def _notify_observers(self, message):
+    def _notify_observers(self, message):
         for observer in self._observers:
             observer.handle_configuration_update(message)
