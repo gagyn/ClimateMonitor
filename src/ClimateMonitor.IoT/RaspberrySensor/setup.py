@@ -34,26 +34,10 @@ async def main():
     configuration_receiver.add_observer(config_service)
     configuration_receiver.add_observer(schedule_manager)
 
-    tasks = [
-        asyncio.create_task(configuration_receiver.connect()),
-        asyncio.create_task(schedule_manager.start_executing()),
-    ]
-    await asyncio.wait(tasks)
+    await asyncio.gather(
+        configuration_receiver.connect(), schedule_manager.start_executing()
+    )
 
 
 if __name__ == "__main__":
     asyncio.run(main())
-
-    # Start a thread to establish websocket connection for config updates
-    # websocket_thread = threading.Thread(target=)
-    # websocket_thread.daemon = True
-    # websocket_thread.start()
-
-    # Start a thread to periodically send sensor data to API
-    # sensor_data_thread = threading.Thread(
-    #     target=send_sensor_data_periodically, args=(frequency_seconds)
-    # )
-    # sensor_data_thread.daemon = True
-    # sensor_data_thread.start()
-
-    # Keep the main thread running

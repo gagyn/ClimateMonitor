@@ -1,5 +1,6 @@
 import json
 import time
+from typing import NoReturn
 import websockets
 from models.app_configuration import AppConfiguration
 from models.sensors_configuration import SensorsConfiguration
@@ -38,30 +39,32 @@ class ConfigurationReceiver:
             json.dumps({"protocol": "json", "version": 1}) + self._terminating_character
         )
 
-    async def connect(self) -> None:
+    async def connect(self):
         print("Waiting for connection...")
-        try:
-            async for websocket in websockets.connect(
-                self._app_configuration.websocketAddress
-            ):
-                print("Websocket connected.")
-                await websocket.send(self._handshakeMessage)
-                print("Sent handshake.")
-                print(await websocket.recv())
+        while True:
+            try:
+                async for websocket in websockets.connect(
+                    self._app_configuration.websocketAddress
+                ):
+                    print("Websocket connected.")
+                    await websocket.send(self._handshakeMessage)
 
-                await websocket.send(self._get_configuration_message)
-                print("DeviceId sent.")
-                try:
-                    await self._handler(websocket)
-                except websockets.ConnectionClosed:
-                    print("Websocket disconnected.")
-                    time.sleep(3)
-                except Exception as e:
-                    print(e)
-                    time.sleep(3)
+                    print("Sent handshake.")
+                    print(await websocket.recv())
 
-        except Exception as e:
-            print(e)
+                    await websocket.send(self._get_configuration_message)
+                    print("DeviceId sent.")
+                    try:
+                        await self._handler(websocket)
+                    except websockets.ConnectionClosed:
+                        print("Websocket disconnected.")
+                        time.sleep(3)
+                    except Exception as e:
+                        print(e)
+                        time.sleep(3)
+
+            except Exception as e:
+                print(e)
 
     def add_observer(self, observer: ConfigurationObserver) -> None:
         self._observers.append(observer)
