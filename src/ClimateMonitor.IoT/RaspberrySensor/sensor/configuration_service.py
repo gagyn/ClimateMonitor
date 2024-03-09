@@ -1,6 +1,6 @@
 import json
 import os
-from api.configuration_reciever import ConfigurationObserver
+from api.configuration_receiver import ConfigurationObserver
 from models.sensors_configuration import SensorsConfiguration
 
 

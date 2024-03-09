@@ -1,6 +1,6 @@
 {
   "baseApiUrl": "https://localhost:44377/api",
   "uploadDataPath": "/record",
-  "websocketAddress": "ws://localhost:5299/ws",
+  "websocketAddress": "ws://localhost:5299/configuration",
   "deviceId": "a22e59b7-aa2b-49df-9420-97d6e017fbb3"
 }

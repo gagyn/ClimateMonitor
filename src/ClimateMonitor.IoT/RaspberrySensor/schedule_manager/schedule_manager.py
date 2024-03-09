@@ -1,7 +1,7 @@
 import time
 from typing import NoReturn
 from uuid import UUID
-from api.configuration_reciever import ConfigurationObserver
+from api.configuration_receiver import ConfigurationObserver
 from api.safe_data_sender import SafeDataSender
 from models.app_configuration import AppConfiguration
 from models.sensors_configuration import SensorsConfiguration
@@ -29,7 +29,8 @@ class ScheduleManager(ConfigurationObserver):
         self._safe_data_sender = safe_data_sender
         self.handle_configuration_update(configuration_service.current_configuration)
 
-    def start_executing(self) -> NoReturn:
+    async def start_executing(self) -> NoReturn:
+        print("Executing scheduled tasks in background...")
         while True:
             schedule.run_pending()
             time.sleep(1)
@@ -42,7 +43,7 @@ class ScheduleManager(ConfigurationObserver):
             | new_configuration.pins_dht22
             | new_configuration.pins_dallas_18b20
         ):
-            self._schedule_handler(sensor_id, self._configuration_service)
+            self._schedule_handler(sensor_id, new_configuration)
 
     def _schedule_handler(
         self,
@@ -54,6 +55,7 @@ class ScheduleManager(ConfigurationObserver):
         schedule.every().crontab_expression(cron).do(
             self._read_and_save, sensor_id, self._sensor_reader, self._safe_data_sender
         )
+        print(f"Sensor {sensor_id} scheduled with cron {cron}")
 
     def _read_and_save(
         sensor_id: UUID, sensor_reader: SensorReader, safe_data_sender: SafeDataSender

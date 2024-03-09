@@ -18,7 +18,7 @@ class SafeDataSender:
         try:
             response = requests.post(url, json=payload)
             if response.status_code == 200:
-                print("Data sent to API successfully")
+                print("Data sent to API successfully.")
             else:
                 print("Failed to send data to API. Status code:", response.status_code)
                 self._backup_request_on_fail(record)

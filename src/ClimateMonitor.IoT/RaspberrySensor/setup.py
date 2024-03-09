@@ -1,5 +1,5 @@
 import asyncio
-from api.configuration_reciever import ConfigurationReciever
+from api.configuration_receiver import ConfigurationReceiver
 from api.safe_data_sender import SafeDataSender
 from models.app_configuration import read_configuration_file
 from schedule_manager.schedule_manager import ScheduleManager
@@ -15,7 +15,7 @@ from sensor.sensor_reader import SensorReader
 # https://schedule.readthedocs.io/en/stable/exception-handling.html
 
 
-if __name__ == "__main__":
+async def main():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
@@ -23,17 +23,26 @@ if __name__ == "__main__":
     app_config = read_configuration_file(config_file_path)
 
     config_service = ConfigurationService()
-    configuration_reciver = ConfigurationReciever(app_config)
-    asyncio.run(configuration_reciver.connect())
+    configuration_receiver = ConfigurationReceiver(app_config)
 
     sensor_reader = SensorReader(config_service)
     safe_data_sender = SafeDataSender(app_config)
     schedule_manager = ScheduleManager(
         app_config, config_service, sensor_reader, safe_data_sender
     )
-    configuration_reciver.add_observer(config_service)
-    configuration_reciver.add_observer(schedule_manager)
-    schedule_manager.start_executing()
+
+    configuration_receiver.add_observer(config_service)
+    configuration_receiver.add_observer(schedule_manager)
+
+    tasks = [
+        asyncio.create_task(configuration_receiver.connect()),
+        asyncio.create_task(schedule_manager.start_executing()),
+    ]
+    await asyncio.wait(tasks)
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
 
     # Start a thread to establish websocket connection for config updates
     # websocket_thread = threading.Thread(target=)
