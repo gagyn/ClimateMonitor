@@ -23,6 +23,7 @@ class SensorReader:
             dht_sensor = adafruit_dht.DHT22(pin)
             return Record(dht_sensor.temperature, dht_sensor.humidity, sensor_id)
 
+        # todo: implement dallas reading
         elif sensor_id in app_config.pins_dallas_18b20:
             pin = app_config.pins_dallas_18b20[sensor_id]
             dallas_sensor = Record(10.0, None, sensor_id)
