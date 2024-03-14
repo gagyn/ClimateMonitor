@@ -4,9 +4,10 @@ public class DeviceConfigurationEntity : BaseEntity
 {
     public Guid DeviceId { get; private set; }
     public string Name { get; private set; }
+    public bool IsActive { get; private set; }
     public IReadOnlyList<SensorConfigurationEntity> SensorConfigurations => sensorConfigurations;
 
-    private readonly List<SensorConfigurationEntity> sensorConfigurations = [];
+    private readonly List<SensorConfigurationEntity> sensorConfigurations;
 
     private DeviceConfigurationEntity(
         string name,
@@ -18,6 +19,7 @@ public class DeviceConfigurationEntity : BaseEntity
         Name = name;
         DeviceId = deviceId;
         this.sensorConfigurations = sensorConfigurations;
+        IsActive = true;
     }
 
     public static DeviceConfigurationEntity Create(
@@ -28,9 +30,10 @@ public class DeviceConfigurationEntity : BaseEntity
         string createdBy)
         => new(name, deviceId, sensorConfigurations, timeProvider, createdBy);
 
-    public void Update(string name, TimeProvider timeProvider, string updatedBy)
+    public void Update(string name, bool activate, TimeProvider timeProvider, string updatedBy)
     {
         Name = name;
+        IsActive = activate;
         SetUpdated(timeProvider, updatedBy);
     }
 
@@ -40,9 +43,9 @@ public class DeviceConfigurationEntity : BaseEntity
         SetUpdated(timeProvider, updatedBy);
     }
 
-    public void RemoveSensor(Guid sensorId, TimeProvider timeProvider, string updatedBy)
+    public void SetActive(bool activate, TimeProvider timeProvider, string updatedBy)
     {
-        sensorConfigurations.RemoveAll(x => x.SensorId == sensorId);
+        IsActive = activate;
         SetUpdated(timeProvider, updatedBy);
     }
 }

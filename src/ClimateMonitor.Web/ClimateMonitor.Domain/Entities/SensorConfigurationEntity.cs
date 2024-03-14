@@ -5,6 +5,7 @@ public class SensorConfigurationEntity : BaseEntity
     public Guid SensorId { get; private set; }
     public string Pin { get; private set; }
     public SensorTypeEntity SensorType { get; private set; }
+    public bool IsActive { get; private set; }
 
     private SensorConfigurationEntity(
         Guid sensorId,
@@ -16,6 +17,7 @@ public class SensorConfigurationEntity : BaseEntity
         SensorId = sensorId;
         Pin = pin;
         SensorType = sensorType;
+        IsActive = true;
     }
 
     public static SensorConfigurationEntity Create(
@@ -26,10 +28,17 @@ public class SensorConfigurationEntity : BaseEntity
         string createdBy)
         => new(sensorId, pin, sensorType, timeProvider, createdBy);
 
-    public void Update(string pin, SensorTypeEntity sensorType, TimeProvider timeProvider, string updatedBy)
+    public void Update(string pin, SensorTypeEntity sensorType, bool activate, TimeProvider timeProvider, string updatedBy)
     {
         Pin = pin;
         SensorType = sensorType;
+        IsActive = activate;
+        SetUpdated(timeProvider, updatedBy);
+    }
+
+    public void SetActive(bool activate, TimeProvider timeProvider, string updatedBy)
+    {
+        IsActive = activate;
         SetUpdated(timeProvider, updatedBy);
     }
 }

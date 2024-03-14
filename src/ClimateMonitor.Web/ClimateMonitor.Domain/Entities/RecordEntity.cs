@@ -2,7 +2,7 @@
 
 public class RecordEntity : BaseEntity
 {
-    public int Id { get; set; }
+    public int Id { get; }
     public Guid DeviceId { get; private set; }
     public Guid SensorId { get; private set; }
     public DateTimeOffset ReadAt { get; private set; }
