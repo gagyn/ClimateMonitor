@@ -1,3 +1,4 @@
+using ClimateMonitor.Infrastructure;
 using ClimateMonitor.Web.API.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("ClimateMonitorDatabase")!);
 
 var app = builder.Build();
 
