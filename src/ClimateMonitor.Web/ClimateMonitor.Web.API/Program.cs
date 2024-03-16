@@ -1,4 +1,5 @@
 using ClimateMonitor.Infrastructure;
+using ClimateMonitor.Web.API.Authorization;
 using ClimateMonitor.Web.API.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthenticationWithBearer();
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("ClimateMonitorDatabase")!);
 
 var app = builder.Build();
@@ -25,6 +28,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseWebSockets();
