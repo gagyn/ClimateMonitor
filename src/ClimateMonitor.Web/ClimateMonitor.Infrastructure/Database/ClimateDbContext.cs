@@ -1,9 +1,10 @@
 ﻿using ClimateMonitor.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ClimateMonitor.Infrastructure.Database;
-public class ClimateDbContext(DbContextOptions<ClimateDbContext> options) : DbContext(options)
+public class ClimateDbContext(DbContextOptions<ClimateDbContext> options) : IdentityDbContext<UserEntity>(options)
 {
     public DbSet<RecordEntity> Records { get; set; }
     public DbSet<DeviceConfigurationEntity> DeviceConfigurations { get; set; }

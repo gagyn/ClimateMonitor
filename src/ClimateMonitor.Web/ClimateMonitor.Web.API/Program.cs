@@ -1,3 +1,4 @@
+using ClimateMonitor.Domain.Entities;
 using ClimateMonitor.Infrastructure;
 using ClimateMonitor.Web.API.Authorization;
 using ClimateMonitor.Web.API.Hubs;
@@ -35,5 +36,6 @@ app.UseWebSockets();
 
 app.MapControllers();
 app.MapHub<SensorConfigurationHub>("/configuration");
+app.MapIdentityApi<UserEntity>();
 
 app.Run();

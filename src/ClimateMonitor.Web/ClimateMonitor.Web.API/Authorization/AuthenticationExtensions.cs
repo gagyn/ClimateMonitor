@@ -1,9 +1,12 @@
+using ClimateMonitor.Domain.Entities;
+using ClimateMonitor.Infrastructure.Database;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 
 namespace ClimateMonitor.Web.API.Authorization;
 
-public static class AddAuthentication
+public static class AuthenticationExtensions
 {
     public static IServiceCollection AddAuthenticationWithBearer(this IServiceCollection serviceCollection)
     {
@@ -45,6 +48,10 @@ public static class AddAuthentication
         });
         serviceCollection.AddSingleton<IUserIdProvider, DeviceIdProvider>();
 
+        serviceCollection.AddIdentityCore<UserEntity>()
+            .AddEntityFrameworkStores<ClimateDbContext>()
+            .AddApiEndpoints();
+        
         return serviceCollection;
     }
 }
