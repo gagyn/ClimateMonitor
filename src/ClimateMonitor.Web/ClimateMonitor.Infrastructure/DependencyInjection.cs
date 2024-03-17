@@ -1,9 +1,12 @@
 using ClimateMonitor.Application.Authorization;
 using ClimateMonitor.Application.Handlers;
+using ClimateMonitor.Domain.Entities;
 using ClimateMonitor.Domain.Repositories;
 using ClimateMonitor.Infrastructure.Authorization;
 using ClimateMonitor.Infrastructure.Database;
 using ClimateMonitor.Infrastructure.Domain;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,5 +34,22 @@ public static class DependencyInjection
         services.AddScoped<IRecordRepository, RecordRepository>();
         services.AddScoped<ISensorConfigurationRepository, SensorConfigurationRepository>();
         return services;
+    }
+
+    public static async Task InitializeDatabase(this IApplicationBuilder app)
+    {
+        using var scope = app.ApplicationServices.CreateScope();
+        var dbContext = scope.ServiceProvider.GetRequiredService<ClimateDbContext>();
+        dbContext.Database.Migrate();
+
+        var roles = new[] { RoleEntity.User, RoleEntity.Device };
+        var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
+        foreach (var role in roles)
+        {
+            if (!await roleManager.RoleExistsAsync(role.ToString()))
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>(role.ToString()));
+            }
+        }
     }
 }

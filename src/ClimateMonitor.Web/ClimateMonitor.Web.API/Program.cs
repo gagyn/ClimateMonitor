@@ -29,6 +29,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -37,5 +38,7 @@ app.UseWebSockets();
 app.MapControllers();
 app.MapHub<SensorConfigurationHub>("/configuration");
 app.MapIdentityApi<UserEntity>();
+
+await app.InitializeDatabase();
 
 app.Run();

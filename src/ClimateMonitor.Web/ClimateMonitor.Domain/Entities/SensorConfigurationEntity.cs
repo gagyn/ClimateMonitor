@@ -8,6 +8,12 @@ public class SensorConfigurationEntity : BaseEntity
     public bool IsActive { get; private set; }
     public string FrequencyCron { get; private set; }
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    private SensorConfigurationEntity()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    {
+    }
+
     private SensorConfigurationEntity(
         Guid sensorId,
         string pin,

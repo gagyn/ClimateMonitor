@@ -4,4 +4,5 @@ public interface IUserContext
 {
     string UserName { get; }
     Guid? DeviceId { get; }
+    Role Role { get; }
 }

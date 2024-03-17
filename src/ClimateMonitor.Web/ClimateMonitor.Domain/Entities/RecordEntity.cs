@@ -9,6 +9,10 @@ public class RecordEntity : BaseEntity
     public double? Temperature { get; private set; }
     public double? Humidity { get; private set; }
 
+    private RecordEntity()
+    {
+    }
+
     private RecordEntity(
         Guid deviceId,
         Guid sensorId,
