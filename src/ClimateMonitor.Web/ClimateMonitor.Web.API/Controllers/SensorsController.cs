@@ -1,5 +1,6 @@
 using ClimateMonitor.Application.Handlers;
 using ClimateMonitor.Infrastructure.Handlers;
+using ClimateMonitor.Web.API.Authorization;
 using ClimateMonitor.Web.API.Hubs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -17,6 +18,7 @@ public class SensorsController(ILogger<SensorsController> logger, IHubContext<Se
     private readonly ILogger<SensorsController> logger = logger;
     private readonly IHubContext<SensorConfigurationHub> hubContext = hubContext;
 
+    [Authorize(Policies.Device)]
     [HttpPost]
     public async Task<IActionResult> SaveRecord([FromBody] AddRecordCommand command)
     {
@@ -28,7 +30,7 @@ public class SensorsController(ILogger<SensorsController> logger, IHubContext<Se
     public async Task SendTestMessage()
     {
         var testDeviceId = Guid.Parse("a22e59b7-aa2b-49df-9420-97d6e017fbb3");
-        var config = mediator.Send(new FindConfigurationQuery(testDeviceId));
+        var config = await mediator.Send(new FindConfigurationQuery(testDeviceId));
         await hubContext.Clients.All.SendAsync("UpdateConfiguration", config);
     }
 }

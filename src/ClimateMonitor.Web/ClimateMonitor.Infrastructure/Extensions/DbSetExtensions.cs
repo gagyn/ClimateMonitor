@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using ClimateMonitor.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
 
 namespace ClimateMonitor.Infrastructure.Extensions;
 
@@ -30,13 +30,7 @@ public static class DbSetExtensions
             .ThrowIfNull(id);
 
     private static T ThrowIfNull<T, TKey>(this T? entity, TKey id) where T : class where TKey : notnull
-    {
-        if (entity == default)
-        {
-            throw new EntityNotFoundException<T>(id);
-        }
-        return entity;
-    }
+        => entity == default ? throw new EntityNotFoundException<T>(id) : entity;
 
     private static Expression<Func<T, bool>> BuildPredicate<T, TKey>(Expression<Func<T, TKey>> idSelector, TKey id)
     {

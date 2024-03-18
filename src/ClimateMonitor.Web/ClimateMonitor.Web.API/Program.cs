@@ -16,6 +16,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthenticationWithBearer();
+builder.Services.AddAuthorization(options => options.AddPolicies());
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("ClimateMonitorDatabase")!);
 
 var app = builder.Build();

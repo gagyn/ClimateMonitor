@@ -9,6 +9,7 @@ public static class AuthenticationExtensions
 {
     public static IServiceCollection AddAuthenticationWithBearer(this IServiceCollection serviceCollection)
     {
+        // https://stackoverflow.com/questions/77936043/asp-net-core-8-default-identity-token-based-auth-not-working-404-not-found-err
         // https://learn.microsoft.com/en-us/aspnet/core/signalr/authn-and-authz?view=aspnetcore-8.0#built-in-jwt-authentication
         serviceCollection.AddAuthentication(options =>
         {

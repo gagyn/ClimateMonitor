@@ -1,3 +1,4 @@
+using ClimateMonitor.Application.Authorization;
 using ClimateMonitor.Application.Models;
 using ClimateMonitor.Domain.Entities;
 using ClimateMonitor.Infrastructure.Database;
@@ -7,12 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClimateMonitor.Infrastructure.Handlers;
 
-public class FindConfigurationQueryHandler(ClimateDbContext climateDbContext) : IRequestHandler<FindConfigurationQuery, DeviceConfiguration>
+public class FindConfigurationQueryHandler(ClimateDbContext climateDbContext, IUserContext userContext) : IRequestHandler<FindConfigurationQuery, DeviceConfiguration>
 {
     public async Task<DeviceConfiguration> Handle(FindConfigurationQuery request, CancellationToken cancellationToken)
     {
         var deviceConfig = await climateDbContext.DeviceConfigurations
             .Include(x => x.SensorConfigurations)
+            .Where(x => x.UserOwnerId == userContext.Id || x.DeviceId == userContext.Id)
             .FindOrThrow(x => x.DeviceId, request.DeviceId, cancellationToken);
 
         var readingFrequencyCrons = deviceConfig.SensorConfigurations
