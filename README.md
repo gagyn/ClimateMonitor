@@ -2,13 +2,13 @@
 
 ## 1. Introduction
 
-### 1.1 Purpose of the application
+### 1.1. Purpose of the application
 
 The purpose of this application is to collect temperature and humidity data from digital sensors using Raspberry Pi or ESP8266.
 
 Collecting data is customisable - you can freely add/remove/manage sensors from which the data should be collected. You can also defined your own data collect frequency using *cron* or setting the schedule in settings via UI.
 
-### 1.2 Repository structure
+### 1.2. Repository structure
 
 This repository contains two projects:
 1. **Data collector**:
@@ -18,7 +18,7 @@ This repository contains two projects:
 	* Based on **React** framework with **Typescript**
 	* Backend handled using **ASP .NET Core 8**
 
-### 1.3 Projects' overview
+### 1.3. Projects' overview
 
 #### Data collector
 The main aim of **Climate Monitor** is to allow easily **collect data** about temperature and humidity in different places, both easily accessible (using Raspberry Pi) or remote places (using ESP8266) as well. Considering the fact, that the .NET API is **hosted online** the data collector can be **placed anywhere**, with the only requirements of **power** (at least from battery) and **internet connection** (may be wireless as well).
@@ -32,3 +32,13 @@ Using the application in your environment allows you to **collect and analyse** 
 
 ## 3. Infrastructure level
 
+
+## 4. Integration between projects
+
+### 4.1. Secure connection
+
+IoT devices communicate over websockets with ASP.NET Core API (with SignalR). The connection is secure (HTTPS) and authenticated (Bearer token). The API's endpoints are secured via authorization as well, by checking the role assigned to the calling user - Device or User. The *User* role is allowed for example to view and manage sensors configuration and view data, while *Device* can download current configuration and upload reading record.
+
+### 4.2. Core API
+
+The API is a central point of the project. It collects and saves all the data from all connected sensors/devcies. Later it allows to access stored records. The dashboard project consumes the API to show user friendly charts.

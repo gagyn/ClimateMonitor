@@ -1,6 +1,5 @@
 import json
 import time
-from typing import NoReturn
 import websockets
 from models.app_configuration import AppConfiguration
 from models.sensors_configuration import SensorsConfiguration
