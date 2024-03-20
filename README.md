@@ -1,4 +1,4 @@
-# Climate Monitor & Dashboard!
+# Climate Monitor & Dashboard
 
 ## 1. Introduction
 
@@ -11,27 +11,36 @@ Collecting data is customisable - you can freely add/remove/manage sensors from 
 ### 1.2. Repository structure
 
 This repository contains two projects:
+
 1. **Data collector**:
-	* Supported devices: **Raspberry Pi**, **ESP8266**, *In future: Arduino*
-	* Supported sensors: **DHT11**, **DS18B20**
+    * Supported devices: **Raspberry Pi**, **ESP8266**, *In future: Arduino*
+    * Supported sensors: **DHT11**, **DS18B20**
 2. **Dashboard**:
-	* Based on **React** framework with **Typescript**
-	* Backend handled using **ASP .NET Core 8**
+    * Based on **React** framework with **Typescript**
+    * Backend handled using **ASP .NET Core 8**
 
 ### 1.3. Projects' overview
 
 #### Data collector
+
 The main aim of **Climate Monitor** is to allow easily **collect data** about temperature and humidity in different places, both easily accessible (using Raspberry Pi) or remote places (using ESP8266) as well. Considering the fact, that the .NET API is **hosted online** the data collector can be **placed anywhere**, with the only requirements of **power** (at least from battery) and **internet connection** (may be wireless as well).
 
 #### Dashboard
+
 But collecting the data doesn't give any value, when it's not presented in understandable and pretty way. This is what the **Dashboard** is for. It presents the collected data using **charts and tables**, also making the data be **easily exportable** to Excel format.
 Using the application in your environment allows you to **collect and analyse** on a data around you.
 
+### 1.4. Running the project
+
+1. First you need to have a running MSSQL database. You can use the command below to run it in a Docker container (regardless the OS you're on):
+
+```powershell
+docker run --name sql_database -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=yourStrong(!)Password" -p 1434:1433 -d mcr.microsoft.com/mssql/server:2022-latest
+```
+
 ## 2. Domain
 
-
 ## 3. Infrastructure level
-
 
 ## 4. Integration between projects
 

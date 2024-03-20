@@ -1,5 +1,6 @@
 import json
 import os
+import logging
 from uuid import UUID
 from api.configuration_receiver import ConfigurationObserver
 from models.sensors_configuration import SensorsConfiguration
@@ -16,7 +17,7 @@ class ConfigurationService(ConfigurationObserver):
                 try:
                     self.current_configuration = SensorsConfiguration(**json.load(file))
                 except:
-                    pass
+                    logging.exception("message")
 
     def handle_configuration_update(
         self, new_configuration: SensorsConfiguration
@@ -24,4 +25,4 @@ class ConfigurationService(ConfigurationObserver):
         self.current_configuration = new_configuration
         with open(self._sensors_config_filename, "w") as file:
             file.write(json.dumps(new_configuration.__dict__))
-            print("Saved new sensors configuration.")
+            logging.info("Saved new sensors configuration.")

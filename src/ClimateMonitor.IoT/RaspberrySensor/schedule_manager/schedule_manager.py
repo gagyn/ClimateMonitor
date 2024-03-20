@@ -1,5 +1,5 @@
 import asyncio
-import time
+import logging
 from typing import NoReturn
 from uuid import UUID
 from api.configuration_receiver import ConfigurationObserver
@@ -33,8 +33,11 @@ class ScheduleManager(ConfigurationObserver):
     async def start_executing(self) -> NoReturn:
         print("Executing scheduled tasks in background...")
         while True:
-            schedule.run_pending()
-            await asyncio.sleep(1)
+            try:
+                schedule.run_pending()
+                await asyncio.sleep(1)
+            except:
+                logging.exception("message")
 
     def handle_configuration_update(
         self, new_configuration: SensorsConfiguration

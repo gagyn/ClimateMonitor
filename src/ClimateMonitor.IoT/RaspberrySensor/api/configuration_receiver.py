@@ -1,6 +1,7 @@
 import json
 import time
 import websockets
+import logging
 from models.app_configuration import AppConfiguration
 from models.sensors_configuration import SensorsConfiguration
 
@@ -53,17 +54,12 @@ class ConfigurationReceiver:
 
                     await websocket.send(self._get_configuration_message)
                     print("DeviceId sent.")
-                    try:
-                        await self._handler(websocket)
-                    except websockets.ConnectionClosed:
-                        print("Websocket disconnected.")
-                        time.sleep(3)
-                    except Exception as e:
-                        print(e)
-                        time.sleep(3)
 
-            except Exception as e:
-                print(e)
+                    await self._handler(websocket)
+
+            except Exception:
+                logging.exception("message")
+                time.sleep(3)
 
     def add_observer(self, observer: ConfigurationObserver) -> None:
         self._observers.append(observer)

@@ -1,0 +1,2 @@
+class SensorIsNotConfigured(Exception):
+    pass

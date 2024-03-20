@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from api.configuration_receiver import ConfigurationReceiver
 from api.safe_data_sender import SafeDataSender
 from models.app_configuration import read_configuration_file
@@ -16,10 +17,16 @@ from sensor.sensor_reader import SensorReader
 
 
 async def main():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        handlers=[logging.FileHandler("sensor.log"), logging.StreamHandler()],
+    )
+
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
 
-    config_file_path = "RaspberrySensor/config.json"
+    config_file_path = "config.json"
     app_config = read_configuration_file(config_file_path)
 
     config_service = ConfigurationService()

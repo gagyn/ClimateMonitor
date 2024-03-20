@@ -1,5 +1,6 @@
 from uuid import UUID
 import adafruit_dht  # type: ignore
+from models.exceptions.sensor_is_not_configured import SensorIsNotConfigured
 from models.record import Record
 from sensor.configuration_service import ConfigurationService
 
@@ -28,3 +29,5 @@ class SensorReader:
             pin = app_config.pins_dallas_18b20[sensor_id]
             dallas_sensor = Record(10.0, None, sensor_id)
             return dallas_sensor
+
+        raise SensorIsNotConfigured
