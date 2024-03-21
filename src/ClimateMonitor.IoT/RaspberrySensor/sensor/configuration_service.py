@@ -1,7 +1,6 @@
 import json
 import os
 import logging
-from uuid import UUID
 from api.configuration_receiver import ConfigurationObserver
 from models.sensors_configuration import SensorsConfiguration
 

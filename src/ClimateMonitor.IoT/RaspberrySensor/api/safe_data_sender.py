@@ -1,31 +1,28 @@
-import json
-import requests
+from api.data_sender import DataSender
+from api.send_record_retryer import SendRecordRetryer
 from models.app_configuration import AppConfiguration
 from models.record import Record
+import logging
 
 
 class SafeDataSender:
-    _app_configuration: AppConfiguration
-
-    def __init__(self, appConfiguration: AppConfiguration):
+    def __init__(self, appConfiguration: AppConfiguration, dataSender: DataSender, sendRecordRetryer: SendRecordRetryer):
         self._app_configuration = appConfiguration
+        self._data_sender = dataSender
+        self._send_data_retryer = sendRecordRetryer
 
     def send_record(self, record: Record) -> None:
-        url = (
-            self._app_configuration.baseApiUrl + self._app_configuration.uploadDataPath
-        )
-        payload = json.dumps(record)
         try:
-            response = requests.post(url, json=payload)
+            response = self._data_sender.send_record(record)
             if response.status_code == 200:
-                print("Data sent to API successfully.")
+                logging.info("Data sent to API successfully.")
             else:
-                print("Failed to send data to API. Status code:", response.status_code)
-                self._backup_request_on_fail(record)
+                logging.error(
+                    "Failed to send data to API. Status code:", response.status_code
+                )
+                self._send_data_retryer.save_failed_request(record)
         except Exception as e:
-            print("Exception occurred while sending data to API:", str(e))
-            self._backup_request_on_fail(record)
+            logging.error("Exception occurred while sending data to API:", str(e))
+            self._send_data_retryer.save_failed_request(record)
 
-    def _backup_request_on_fail(self, record: Record):
-        with open("failed_data.txt", "a") as file:
-            file.write(f"{record.temperature}|{record.humidity}|{record.sensor_id}\n")
+    
