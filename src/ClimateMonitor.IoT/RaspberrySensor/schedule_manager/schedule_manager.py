@@ -37,7 +37,7 @@ class ScheduleManager(ConfigurationObserver):
                 schedule.run_pending()
                 await asyncio.sleep(1)
             except:
-                logging.exception("message")
+                logging.exception("ScheduleManager.start_executing")
 
     def handle_configuration_update(
         self, new_configuration: SensorsConfiguration
@@ -59,7 +59,7 @@ class ScheduleManager(ConfigurationObserver):
         schedule.every().crontab_expression(cron).do(
             self._read_and_save, sensor_id, self._sensor_reader, self._safe_data_sender
         )
-        print(f"Sensor {sensor_id} scheduled with cron {cron}")
+        logging.info(f"Sensor {sensor_id} scheduled with cron {cron}")
 
     def _read_and_save(
         self,

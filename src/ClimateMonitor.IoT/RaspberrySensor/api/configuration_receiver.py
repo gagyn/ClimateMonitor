@@ -1,4 +1,5 @@
 import json
+import ssl
 import time
 import websockets
 import logging
@@ -40,11 +41,15 @@ class ConfigurationReceiver:
         )
 
     async def connect(self):
+        ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+        localhost_pem = "test_localhost.pem"
+        ssl_context.load_verify_locations(localhost_pem)
+
         print("Waiting for connection...")
         while True:
             try:
                 async for websocket in websockets.connect(
-                    self._app_configuration.websocketAddress
+                    uri=self._app_configuration.websocketAddress, ssl=ssl_context
                 ):
                     print("Websocket connected.")
                     await websocket.send(self._handshakeMessage)

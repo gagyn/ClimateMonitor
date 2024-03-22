@@ -1,7 +1,9 @@
 import asyncio
 import logging
 from api.configuration_receiver import ConfigurationReceiver
+from api.data_sender import DataSender
 from api.safe_data_sender import SafeDataSender
+from api.send_record_retryer import SendRecordRetryer
 from models.app_configuration import read_configuration_file
 from schedule_manager.schedule_manager import ScheduleManager
 from sensor.configuration_service import ConfigurationService
@@ -33,7 +35,9 @@ async def main():
     configuration_receiver = ConfigurationReceiver(app_config)
 
     sensor_reader = SensorReader(config_service)
-    safe_data_sender = SafeDataSender(app_config)
+    data_sender = DataSender(app_config)
+    send_record_retryer = SendRecordRetryer(data_sender)
+    safe_data_sender = SafeDataSender(app_config, data_sender, send_record_retryer)
     schedule_manager = ScheduleManager(
         app_config, config_service, sensor_reader, safe_data_sender
     )
