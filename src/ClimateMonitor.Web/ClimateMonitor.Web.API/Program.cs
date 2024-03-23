@@ -38,7 +38,6 @@ app.UseWebSockets();
 
 app.MapControllers();
 app.MapHub<SensorConfigurationHub>("/configuration");
-app.MapIdentityApi<UserEntity>();
 
 await app.InitializeDatabase();
 
