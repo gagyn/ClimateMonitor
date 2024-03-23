@@ -1,4 +1,3 @@
-using ClimateMonitor.Domain.Entities;
 using ClimateMonitor.Infrastructure;
 using ClimateMonitor.Web.API.Authorization;
 using ClimateMonitor.Web.API.Hubs;

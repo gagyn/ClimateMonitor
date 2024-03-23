@@ -1,6 +1,6 @@
 ﻿namespace ClimateMonitor.Domain.Entities;
 public enum RoleEntity
 {
-    Device,
+    Device = 1,
     User
 }

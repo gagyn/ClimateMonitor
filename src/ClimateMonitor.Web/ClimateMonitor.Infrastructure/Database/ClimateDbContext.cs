@@ -5,11 +5,14 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace ClimateMonitor.Infrastructure.Database;
-public class ClimateDbContext(DbContextOptions<ClimateDbContext> options) : IdentityDbContext<UserEntity, IdentityRole<Guid>, Guid>(options)
+public class ClimateDbContext(DbContextOptions<ClimateDbContext> options) : IdentityDbContext<BaseUserEntity, IdentityRole<Guid>, Guid>(options)
 {
     public DbSet<RecordEntity> Records { get; set; }
-    public DbSet<DeviceConfigurationEntity> DeviceConfigurations { get; set; }
+    public DbSet<DeviceEntity> Devices { get; set; }
     public DbSet<SensorConfigurationEntity> SensorConfigurations { get; set; }
+    public new DbSet<UserEntity> Users { get; set; }
+    public DbSet<DeviceUserEntity> DeviceUsers { get; set; }
+    public DbSet<BaseUserEntity> BaseUsers => base.Users;
 
     public const string DefaultSchema = "climateMonitor";
 

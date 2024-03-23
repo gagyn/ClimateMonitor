@@ -30,7 +30,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IDeviceConfigurationRepository, DeviceConfigurationRepository>();
+        services.AddScoped<IDeviceRepository, DeviceRepository>();
         services.AddScoped<IRecordRepository, RecordRepository>();
         services.AddScoped<ISensorConfigurationRepository, SensorConfigurationRepository>();
         return services;

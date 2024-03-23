@@ -64,7 +64,7 @@ public static class AuthenticationExtensions
         //});
         serviceCollection.AddSingleton<IUserIdProvider, DeviceIdProvider>();
 
-        serviceCollection.AddIdentityCore<UserEntity>(options =>
+        serviceCollection.AddIdentityCore<BaseUserEntity>(options =>
         {
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequireDigit = false;

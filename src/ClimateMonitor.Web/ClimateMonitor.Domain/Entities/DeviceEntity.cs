@@ -1,6 +1,6 @@
 ﻿namespace ClimateMonitor.Domain.Entities;
 
-public class DeviceConfigurationEntity : BaseEntity
+public class DeviceEntity : BaseEntity
 {
     public Guid DeviceId { get; private set; }
     public string Name { get; private set; }
@@ -11,12 +11,12 @@ public class DeviceConfigurationEntity : BaseEntity
     private readonly List<SensorConfigurationEntity> sensorConfigurations;
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    private DeviceConfigurationEntity()
+    private DeviceEntity()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
     }
 
-    private DeviceConfigurationEntity(
+    private DeviceEntity(
         string name,
         Guid deviceId,
         Guid userOwnerId,
@@ -31,7 +31,7 @@ public class DeviceConfigurationEntity : BaseEntity
         IsActive = true;
     }
 
-    public static DeviceConfigurationEntity Create(
+    public static DeviceEntity Create(
         string name,
         Guid deviceId,
         Guid userOwnerId,

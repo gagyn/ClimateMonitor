@@ -12,7 +12,7 @@ public class FindConfigurationQueryHandler(ClimateDbContext climateDbContext, IU
 {
     public async Task<DeviceConfiguration> Handle(FindConfigurationQuery request, CancellationToken cancellationToken)
     {
-        var deviceConfig = await climateDbContext.DeviceConfigurations
+        var deviceConfig = await climateDbContext.Devices
             .Include(x => x.SensorConfigurations)
             .Where(x => x.UserOwnerId == userContext.Id || x.DeviceId == userContext.Id)
             .FindOrThrow(x => x.DeviceId, request.DeviceId, cancellationToken);

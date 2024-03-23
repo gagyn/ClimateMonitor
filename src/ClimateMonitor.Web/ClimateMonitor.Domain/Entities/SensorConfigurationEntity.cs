@@ -7,6 +7,7 @@ public class SensorConfigurationEntity : BaseEntity
     public SensorTypeEntity SensorType { get; private set; }
     public bool IsActive { get; private set; }
     public string FrequencyCron { get; private set; }
+    public Guid DeviceId { get; private set; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     private SensorConfigurationEntity()

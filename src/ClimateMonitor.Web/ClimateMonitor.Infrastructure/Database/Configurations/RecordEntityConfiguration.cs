@@ -10,7 +10,7 @@ public class RecordEntityConfiguration : BaseEntityConfiguration<RecordEntity>
     {
         base.Configure(builder);
         builder.HasKey(x => x.Id);
-        builder.HasOne<DeviceConfigurationEntity>()
+        builder.HasOne<DeviceEntity>()
             .WithMany()
             .HasForeignKey(x => x.DeviceId)
             .OnDelete(DeleteBehavior.Restrict);

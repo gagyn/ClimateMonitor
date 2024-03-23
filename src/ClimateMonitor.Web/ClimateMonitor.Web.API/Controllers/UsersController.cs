@@ -10,18 +10,18 @@ namespace ClimateMonitor.Web.API.Controllers;
 [ApiController]
 [Route("[controller]")]
 public class UsersController(
-    UserManager<UserEntity> userManager,
-    IUserClaimsPrincipalFactory<UserEntity> claimsFactory,
+    UserManager<BaseUserEntity> userManager,
+    IUserClaimsPrincipalFactory<BaseUserEntity> claimsFactory,
     IOptionsMonitor<BearerTokenOptions> optionsMonitor,
     TimeProvider timeProvider,
-    SignInManager<UserEntity> signInManager) : ControllerBase
+    SignInManager<BaseUserEntity> signInManager) : ControllerBase
 {
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterCommand command)
     {
-        var user = UserEntity.Create(command.Username);
-        await userManager.SetUserNameAsync(user, command.Username);
-        var result = await userManager.CreateAsync(user, command.Password);
+        var user = UserEntity.Create(command.Username, timeProvider, command.Username);
+        await userManager.SetUserNameAsync(user.BaseUser, command.Username);
+        var result = await userManager.CreateAsync(user.BaseUser, command.Password);
 
         if (result.Succeeded)
         {
@@ -31,7 +31,7 @@ public class UsersController(
         var errors = result.Errors.ToDictionary(e => e.Code, e => new[] { e.Description });
         return BadRequest(errors);
     }
-    
+
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginCommand command)
     {
@@ -54,8 +54,8 @@ public class UsersController(
     public async Task<IActionResult> Refresh([FromBody] RefreshRequest refreshRequest)
     {
         var identityBearerOptions = optionsMonitor.Get(IdentityConstants.BearerScheme);
-        var refreshTokenProtector = identityBearerOptions.RefreshTokenProtector 
-                                    ?? throw new ArgumentException($"{nameof(identityBearerOptions.RefreshTokenProtector)} is null", nameof(optionsMonitor));
+        var refreshTokenProtector = identityBearerOptions.RefreshTokenProtector
+            ?? throw new ArgumentException($"{nameof(identityBearerOptions.RefreshTokenProtector)} is null", nameof(optionsMonitor));
         var refreshTicket = refreshTokenProtector.Unprotect(refreshRequest.RefreshToken);
 
         // Reject the /refresh attempt with a 401 if the token expired or the security stamp validation fails
