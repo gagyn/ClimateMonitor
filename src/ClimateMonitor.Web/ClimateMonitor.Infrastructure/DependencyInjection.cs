@@ -1,5 +1,5 @@
 using ClimateMonitor.Application.Authorization;
-using ClimateMonitor.Application.Handlers;
+using ClimateMonitor.Application.Commands;
 using ClimateMonitor.Domain.Entities;
 using ClimateMonitor.Domain.Repositories;
 using ClimateMonitor.Infrastructure.Authorization;
@@ -33,6 +33,8 @@ public static class DependencyInjection
         services.AddScoped<IDeviceRepository, DeviceRepository>();
         services.AddScoped<IRecordRepository, RecordRepository>();
         services.AddScoped<ISensorConfigurationRepository, SensorConfigurationRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IDeviceUserRepository, DeviceUserRepository>();
         return services;
     }
 

@@ -1,3 +1,4 @@
+using ClimateMonitor.Application.Commands;
 using ClimateMonitor.Domain.Entities;
 using ClimateMonitor.Domain.Repositories;
 using MediatR;

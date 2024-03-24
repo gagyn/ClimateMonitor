@@ -3,11 +3,11 @@
 public class SensorConfigurationEntity : BaseEntity
 {
     public Guid SensorId { get; private set; }
+    public Guid DeviceId { get; private set; }
     public string Pin { get; private set; }
     public SensorTypeEntity SensorType { get; private set; }
     public bool IsActive { get; private set; }
     public string FrequencyCron { get; private set; }
-    public Guid DeviceId { get; private set; }
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     private SensorConfigurationEntity()
@@ -17,6 +17,7 @@ public class SensorConfigurationEntity : BaseEntity
 
     private SensorConfigurationEntity(
         Guid sensorId,
+        Guid deviceId,
         string pin,
         SensorTypeEntity sensorType,
         string frequencyCron,
@@ -24,6 +25,7 @@ public class SensorConfigurationEntity : BaseEntity
         string createdBy) : base(timeProvider, createdBy)
     {
         SensorId = sensorId;
+        DeviceId = deviceId;
         Pin = pin;
         SensorType = sensorType;
         IsActive = true;
@@ -32,12 +34,13 @@ public class SensorConfigurationEntity : BaseEntity
 
     public static SensorConfigurationEntity Create(
         Guid sensorId,
+        Guid deviceId,
         string pin,
         SensorTypeEntity sensorType,
         string frequencyCron,
         TimeProvider timeProvider,
         string createdBy)
-        => new(sensorId, pin, sensorType, frequencyCron, timeProvider, createdBy);
+        => new(sensorId, deviceId, pin, sensorType, frequencyCron, timeProvider, createdBy);
 
     public void Update(string pin, SensorTypeEntity sensorType, bool activate, string frequencyCron, TimeProvider timeProvider, string updatedBy)
     {

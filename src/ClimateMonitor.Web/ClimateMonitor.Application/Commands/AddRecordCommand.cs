@@ -1,6 +1,6 @@
 using MediatR;
 
-namespace ClimateMonitor.Application.Handlers;
+namespace ClimateMonitor.Application.Commands;
 
 public record AddRecordCommand(
     Guid SensorId,

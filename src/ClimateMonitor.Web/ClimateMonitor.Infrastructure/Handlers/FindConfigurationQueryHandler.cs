@@ -1,5 +1,6 @@
 using ClimateMonitor.Application.Authorization;
 using ClimateMonitor.Application.Models;
+using ClimateMonitor.Application.Queries;
 using ClimateMonitor.Domain.Entities;
 using ClimateMonitor.Infrastructure.Database;
 using ClimateMonitor.Infrastructure.Extensions;

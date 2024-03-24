@@ -1,5 +1,5 @@
 ﻿using ClimateMonitor.Application.Authorization;
-using ClimateMonitor.Infrastructure.Handlers;
+using ClimateMonitor.Application.Queries;
 using ClimateMonitor.Web.API.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

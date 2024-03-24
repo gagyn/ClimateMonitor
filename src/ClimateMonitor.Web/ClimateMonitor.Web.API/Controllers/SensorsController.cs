@@ -1,5 +1,5 @@
-using ClimateMonitor.Application.Handlers;
-using ClimateMonitor.Infrastructure.Handlers;
+using ClimateMonitor.Application.Commands;
+using ClimateMonitor.Application.Queries;
 using ClimateMonitor.Web.API.Authorization;
 using ClimateMonitor.Web.API.Hubs;
 using MediatR;

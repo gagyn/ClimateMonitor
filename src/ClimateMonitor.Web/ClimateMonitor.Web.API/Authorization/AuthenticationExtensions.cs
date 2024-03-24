@@ -16,20 +16,17 @@ public static class AuthenticationExtensions
             options.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
             options.DefaultChallengeScheme = IdentityConstants.BearerScheme;
         })
-            .AddBearerToken(IdentityConstants.BearerScheme, options =>
+            .AddBearerToken(IdentityConstants.BearerScheme, options => options.Events = new()
             {
-                options.Events = new()
+                OnMessageReceived = context =>
                 {
-                    OnMessageReceived = context =>
+                    var accessToken = context.Request.Query["access_token"];
+                    if (!string.IsNullOrEmpty(accessToken))
                     {
-                        var accessToken = context.Request.Query["access_token"];
-                        if (!string.IsNullOrEmpty(accessToken))
-                        {
-                            context.Token = accessToken;
-                        }
-                        return Task.CompletedTask;
+                        context.Token = accessToken;
                     }
-                };
+                    return Task.CompletedTask;
+                }
             });
         //    .AddJwtBearer(options =>
         //{
