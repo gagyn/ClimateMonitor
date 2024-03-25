@@ -40,6 +40,16 @@ docker run --name sql_database -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=yourStro
 
 ## 2. Domain
 
+### 2.1. Structure
+
+![Domain structure](./docs/Domain.jpg)
+
+### 2.1. Processes
+
+#### 2.1.1. Adding new Device to User account
+
+![Process schema of adding new device to user account](./docs/Adding_new_device.jpg)
+
 ## 3. Infrastructure level
 
 ## 4. Integration between projects
