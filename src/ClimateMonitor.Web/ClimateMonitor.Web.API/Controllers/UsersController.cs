@@ -17,6 +17,13 @@ public class UsersController(IMediator mediator) : ControllerBase
         return Ok();
     }
 
+    [HttpPost("register-device")]
+    public async Task<IActionResult> RegisterDevice([FromBody] RegisterDeviceCommand command)
+    {
+        await mediator.Send(command);
+        return Ok();
+    }
+
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserQuery query)
     {

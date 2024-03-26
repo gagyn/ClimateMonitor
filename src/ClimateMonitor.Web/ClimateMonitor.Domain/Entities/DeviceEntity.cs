@@ -8,7 +8,7 @@ public class DeviceEntity : BaseEntity
     public bool IsActive { get; private set; }
     public IReadOnlyList<SensorConfigurationEntity> SensorConfigurations => sensorConfigurations;
 
-    private readonly List<SensorConfigurationEntity> sensorConfigurations;
+    private readonly List<SensorConfigurationEntity> sensorConfigurations = [];
 
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     private DeviceEntity()
@@ -20,25 +20,21 @@ public class DeviceEntity : BaseEntity
         string name,
         Guid deviceId,
         Guid userOwnerId,
-        List<SensorConfigurationEntity> sensorConfigurations,
         TimeProvider timeProvider,
         string createdBy) : base(timeProvider, createdBy)
     {
         Name = name;
         DeviceId = deviceId;
         UserOwnerId = userOwnerId;
-        this.sensorConfigurations = sensorConfigurations;
         IsActive = true;
     }
 
     public static DeviceEntity Create(
-        string name,
         Guid deviceId,
         Guid userOwnerId,
-        List<SensorConfigurationEntity> sensorConfigurations,
         TimeProvider timeProvider,
         string createdBy)
-        => new(name, deviceId, userOwnerId, sensorConfigurations, timeProvider, createdBy);
+        => new(name: "New device", deviceId, userOwnerId, timeProvider, createdBy);
 
     public void Update(string name, bool activate, TimeProvider timeProvider, string updatedBy)
     {

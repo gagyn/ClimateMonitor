@@ -8,7 +8,7 @@ internal class DeviceUserEntityConfiguration : BaseEntityConfiguration<DeviceUse
     public override void Configure(EntityTypeBuilder<DeviceUserEntity> builder)
     {
         base.Configure(builder);
-        builder.HasKey(x => x.Id);
+        builder.HasKey(x => x.DeviceId);
         builder.HasOne(x => x.BaseUser);
     }
 }
