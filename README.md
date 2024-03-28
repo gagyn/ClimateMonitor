@@ -35,7 +35,7 @@ Using the application in your environment allows you to **collect and analyse** 
 1. First you need to have a running MSSQL database. You can use the command below to run it in a Docker container (regardless the OS you're on):
 
 ```powershell
-docker run --name sql_database -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=yourStrong(!)Password" -p 1434:1433 -d mcr.microsoft.com/mssql/server:2022-latest
+docker run --name sql_database -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=yourStrong(!)Password' -p 1434:1433 -d mcr.microsoft.com/mssql/server:2022-latest
 ```
 
 ## 2. Domain
@@ -47,6 +47,8 @@ docker run --name sql_database -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=yourStro
 ### 2.1. Processes
 
 #### 2.1.1. Adding new Device to User account
+
+Each new device needs to be linked to registered user. The diagram below explains the process of adding new device to user's account.
 
 ![Process schema of adding new device to user account](./docs/Adding_new_device.jpg)
 
