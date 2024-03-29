@@ -16,5 +16,7 @@ public class DeviceEntityConfiguration : BaseEntityConfiguration<DeviceEntity>
             .WithOne()
             .HasForeignKey(x => x.DeviceId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.OwnsOne(x => x.BaseUser).WithOwner();
     }
 }

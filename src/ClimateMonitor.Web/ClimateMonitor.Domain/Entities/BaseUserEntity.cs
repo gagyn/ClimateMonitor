@@ -8,9 +8,15 @@ public class BaseUserEntity : IdentityUser<Guid>
     {
     }
 
-    private BaseUserEntity(string username) : base(username)
+    private BaseUserEntity(Guid id, string username) : base(username)
     {
+        Id = id;
     }
 
-    internal static BaseUserEntity Create(string username) => new(username);
+    internal static BaseUserEntity Create(string username) => new(Guid.NewGuid(), username);
+    internal static BaseUserEntity Create(Func<Guid, string> usernameBasedOnIdFactory)
+    {
+        var id = Guid.NewGuid();
+        return new BaseUserEntity(id, usernameBasedOnIdFactory(id));
+    }
 }

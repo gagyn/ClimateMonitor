@@ -11,11 +11,12 @@ public class UserEntity : BaseEntity
     {
     }
 
-    private UserEntity(BaseUserEntity baseUser, TimeProvider timeProvider, string createdBy) : base(timeProvider, createdBy)
+    private UserEntity(string username, TimeProvider timeProvider, string createdBy) : base(timeProvider, createdBy)
     {
-        BaseUser = baseUser;
+        BaseUser = BaseUserEntity.Create(username);
+        Id = BaseUser.Id;
     }
 
     public static UserEntity Create(string username, TimeProvider timeProvider, string createdBy)
-        => new(BaseUserEntity.Create(username), timeProvider, createdBy);
+        => new(username, timeProvider, createdBy);
 }

@@ -34,7 +34,6 @@ public static class DependencyInjection
         services.AddScoped<IRecordRepository, RecordRepository>();
         services.AddScoped<ISensorConfigurationRepository, SensorConfigurationRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IDeviceUserRepository, DeviceUserRepository>();
         return services;
     }
 

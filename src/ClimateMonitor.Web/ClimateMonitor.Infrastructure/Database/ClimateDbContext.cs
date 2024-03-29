@@ -11,10 +11,9 @@ public class ClimateDbContext(DbContextOptions<ClimateDbContext> options) : Iden
     public DbSet<DeviceEntity> Devices { get; set; }
     public DbSet<SensorConfigurationEntity> SensorConfigurations { get; set; }
     public new DbSet<UserEntity> Users { get; set; }
-    public DbSet<DeviceUserEntity> DeviceUsers { get; set; }
     public DbSet<BaseUserEntity> BaseUsers => base.Users;
 
-    public const string DefaultSchema = "climateMonitor";
+    private const string DefaultSchema = "climateMonitor";
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

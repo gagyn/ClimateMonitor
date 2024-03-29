@@ -2,10 +2,11 @@
 
 public class DeviceEntity : BaseEntity
 {
-    public Guid DeviceId { get; private set; }
+    public Guid DeviceId { get; }
     public string Name { get; private set; }
     public Guid UserOwnerId { get; private set; }
     public bool IsActive { get; private set; }
+    public BaseUserEntity BaseUser { get; private set; }
     public IReadOnlyList<SensorConfigurationEntity> SensorConfigurations => sensorConfigurations;
 
     private readonly List<SensorConfigurationEntity> sensorConfigurations = [];
@@ -17,24 +18,23 @@ public class DeviceEntity : BaseEntity
     }
 
     private DeviceEntity(
-        string name,
-        Guid deviceId,
         Guid userOwnerId,
         TimeProvider timeProvider,
         string createdBy) : base(timeProvider, createdBy)
     {
-        Name = name;
-        DeviceId = deviceId;
+        var usernameFactory = (Guid id) => $"Device {id}";
+        BaseUser = BaseUserEntity.Create(usernameFactory);
+        Name = "New device";
+        DeviceId = BaseUser.Id;
         UserOwnerId = userOwnerId;
         IsActive = true;
     }
 
     public static DeviceEntity Create(
-        Guid deviceId,
         Guid userOwnerId,
         TimeProvider timeProvider,
         string createdBy)
-        => new(name: "New device", deviceId, userOwnerId, timeProvider, createdBy);
+        => new(userOwnerId, timeProvider, createdBy);
 
     public void Update(string name, bool activate, TimeProvider timeProvider, string updatedBy)
     {
