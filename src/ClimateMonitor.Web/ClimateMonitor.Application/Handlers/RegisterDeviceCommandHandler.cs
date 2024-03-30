@@ -22,7 +22,6 @@ public class RegisterDeviceCommandHandler(
     {
         var user = await userRepository.FindOrThrow(request.UserId, cancellationToken);
         var device = DeviceEntity.Create(user.Id, timeProvider, user.BaseUser.UserName!);
-        deviceRepository.Add(device);
         //await userManager.SetUserNameAsync(deviceUser.BaseUser, request.Username);
         var result = await userManager.CreateAsync(device.BaseUser, password: device.DeviceId.ToString());
 
@@ -32,6 +31,7 @@ public class RegisterDeviceCommandHandler(
             throw new RegisterUserValidationException(string.Join(", ", errors));
         }
         
+        deviceRepository.Add(device);
         await userManager.AddToRoleAsync(device.BaseUser, Role.Device.ToString());
         await deviceRepository.SaveChanges(cancellationToken);
         return device.DeviceId;

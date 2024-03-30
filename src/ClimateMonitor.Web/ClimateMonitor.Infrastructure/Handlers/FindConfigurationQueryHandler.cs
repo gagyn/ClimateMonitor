@@ -16,8 +16,12 @@ public class FindConfigurationQueryHandler(ClimateDbContext climateDbContext, IU
         var deviceConfig = await climateDbContext.Devices
             .Include(x => x.SensorConfigurations)
             .Where(x => x.UserOwnerId == userContext.Id || x.DeviceId == userContext.Id)
-            .FindOrThrow(x => x.DeviceId, request.DeviceId, cancellationToken);
+            .FirstOrDefaultAsync(x => x.DeviceId == request.DeviceId, cancellationToken);
 
+        if (deviceConfig == null)
+        {
+            return new(new(), new(), new(), new());
+        }
         var readingFrequencyCrons = deviceConfig.SensorConfigurations
             .ToDictionary(x => x.SensorId, x => x.FrequencyCron);
 

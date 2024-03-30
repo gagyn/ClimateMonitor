@@ -13,5 +13,5 @@ public class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T> where T : 
         builder.Property(x => x.CreatedAt).IsRequired();
     }
 
-    protected string GetTableName<TEntity>() => typeof(TEntity).Name.Replace("Entity", "s");
+    private string GetTableName<TEntity>() => typeof(TEntity).Name.Replace("Entity", "s");
 }

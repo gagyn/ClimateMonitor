@@ -1,10 +1,10 @@
-﻿using ClimateMonitor.Application.Queries;
+﻿using System.Security.Claims;
+using ClimateMonitor.Application.Queries;
 using ClimateMonitor.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
-namespace ClimateMonitor.Application.Handlers;
+namespace ClimateMonitor.Infrastructure.Handlers;
 
 public class LoginUserQueryHandler(
     UserManager<BaseUserEntity> userManager,
