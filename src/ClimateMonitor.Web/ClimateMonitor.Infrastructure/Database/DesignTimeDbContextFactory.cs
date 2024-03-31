@@ -10,7 +10,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ClimateDbC
         var builder = new DbContextOptionsBuilder<ClimateDbContext>();
 
         var baseDir = Directory.GetParent(Directory.GetCurrentDirectory());
-        const string appsettingsRelativePath = @"ClimateMonitor.Web.API\appsettings.json";
+        const string appsettingsRelativePath = @"ClimateMonitor.Web.API/appsettings.json";
         var appsettingsPath = Path.Combine(baseDir!.FullName, appsettingsRelativePath);
 
         IConfigurationRoot configuration = new ConfigurationBuilder()

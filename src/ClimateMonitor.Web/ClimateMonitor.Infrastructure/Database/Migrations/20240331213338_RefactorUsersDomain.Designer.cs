@@ -4,6 +4,7 @@ using ClimateMonitor.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClimateMonitor.Infrastructure.Database.Migrations
 {
     [DbContext(typeof(ClimateDbContext))]
-    partial class ClimateDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240331213338_RefactorUsersDomain")]
+    partial class RefactorUsersDomain
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
