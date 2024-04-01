@@ -19,7 +19,7 @@ public class DeviceEntityConfiguration : BaseEntityConfiguration<DeviceEntity>
 
         builder.HasOne(x => x.BaseUser)
             .WithOne()
-            .HasForeignKey<BaseUserEntity>(x => x.Id)
+            .HasForeignKey<DeviceEntity>(x => x.DeviceId)
             .OnDelete(DeleteBehavior.Cascade);
     }
 }

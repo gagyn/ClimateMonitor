@@ -22,7 +22,7 @@ public class DeviceEntity : BaseEntity
         TimeProvider timeProvider,
         string createdBy) : base(timeProvider, createdBy)
     {
-        var usernameFactory = (Guid id) => $"Device {id}";
+        var usernameFactory = (Guid id) => $"Device{id.ToString().Replace("-", "")}";
         BaseUser = BaseUserEntity.Create(usernameFactory);
         Name = "New device";
         DeviceId = BaseUser.Id;

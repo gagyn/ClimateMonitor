@@ -11,7 +11,7 @@ internal class UserEntityConfiguration : BaseEntityConfiguration<UserEntity>
         builder.HasKey(x => x.Id);
         builder.HasOne(x => x.BaseUser)
             .WithOne()
-            .HasForeignKey<BaseUserEntity>(x => x.Id)
+            .HasForeignKey<UserEntity>(x => x.Id)
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(x => x.Devices)

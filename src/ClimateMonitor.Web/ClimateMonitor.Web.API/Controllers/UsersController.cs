@@ -1,6 +1,7 @@
 using ClimateMonitor.Application.Commands;
 using ClimateMonitor.Application.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,10 +20,7 @@ public class UsersController(IMediator mediator) : ControllerBase
 
     [HttpPost("register-device")]
     public async Task<IActionResult> RegisterDevice([FromBody] RegisterDeviceCommand command)
-    {
-        await mediator.Send(command);
-        return Ok();
-    }
+        => Ok(await mediator.Send(command));
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginUserQuery query)
@@ -41,4 +39,9 @@ public class UsersController(IMediator mediator) : ControllerBase
         var newPrincipal = await mediator.Send(query);
         return SignIn(newPrincipal, authenticationScheme: IdentityConstants.BearerScheme);
     }
+
+    [Authorize]
+    [HttpGet("me")]
+    public async Task<IActionResult> GetMe()
+        => Ok(await mediator.Send(new FindMyUserQuery()));
 }
