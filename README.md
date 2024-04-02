@@ -40,6 +40,11 @@ docker run --name sql_database -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=yourStro
 
 ## 2. Domain
 
+### 2.0. Overview
+
+Each user can have devices assigned to his account, which allows to manage them and see records read only by his own devices.
+The system can have two types of users - 1. User and 2. Device. Each role is restricted to some endpoints.
+
 ### 2.1. Structure
 
 ![Domain structure](./docs/Domain.jpg)
