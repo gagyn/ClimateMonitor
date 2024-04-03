@@ -1,6 +1,7 @@
 {
   "baseApiUrl": "https://localhost:7248/api/",
-  "registerDevice": "users/register-device",
+  "registerDevicePath": "users/register-device",
   "uploadDataPath": "sensors",
-  "websocketAddress": "wss://localhost:7248/configuration"
+  "websocketAddress": "wss://localhost:7248/configuration",
+  "userId": ""
 }

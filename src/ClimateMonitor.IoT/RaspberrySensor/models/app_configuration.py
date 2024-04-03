@@ -8,12 +8,14 @@ class AppConfiguration:
         baseApiUrl: str,
         uploadDataPath: str,
         websocketAddress: str,
-        deviceId: UUID,
+        registerDevicePath: str,
+        userId: UUID,
     ):
         self.baseApiUrl = baseApiUrl
         self.uploadDataPath = uploadDataPath
         self.websocketAddress = websocketAddress
-        self.deviceId = deviceId
+        self.registerDevicePath = registerDevicePath
+        self.userId = userId
 
 
 def read_configuration_file(file_path) -> AppConfiguration:
@@ -23,5 +25,6 @@ def read_configuration_file(file_path) -> AppConfiguration:
             baseApiUrl=config_data.get("baseApiUrl"),
             uploadDataPath=config_data.get("uploadDataPath"),
             websocketAddress=config_data.get("websocketAddress"),
-            deviceId=config_data.get("deviceId"),
+            registerDevicePath=config_data.get("registerDevicePath"),
+            userId=config_data.get("userId"),
         )
