@@ -20,10 +20,11 @@ class SendRecordRetryer:
     async def run(self):
         while True:
             try:
-                with open(self._backup_file_name, "w") as file:
+                with open(self._backup_file_name, "r+") as file:
                     for line in file:
                         record = self._read_line(line)
                         self._data_sender.send_record(record)
+                    file.truncate(0)  # clear file when all records are uploaded
             except Exception:
                 logging.exception("message")
                 time.sleep(3)

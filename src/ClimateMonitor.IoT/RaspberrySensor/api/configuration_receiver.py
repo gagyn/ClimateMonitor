@@ -1,9 +1,11 @@
 import json
 import ssl
 import time
+import requests
 import websockets
 import logging
 from models.app_configuration import AppConfiguration
+from models.device_id_provider import DeviceIdProvider
 from models.sensors_configuration import SensorsConfiguration
 
 
@@ -21,17 +23,17 @@ class ConfigurationReceiver:
     _terminating_character = chr(0x1E)
 
     def __init__(
-        self,
-        app_configuration: AppConfiguration,
+        self, app_configuration: AppConfiguration, device_id_provider: DeviceIdProvider
     ):
         self._app_configuration = app_configuration
+        self._device_id_provider = device_id_provider
         self._get_configuration_message = (
             json.dumps(
                 {
                     "type": 1,
                     "headers": {},
                     "target": "GetConfiguration",
-                    "arguments": [str(app_configuration.deviceId)],
+                    "arguments": [str(device_id_provider.device_id)],
                 }
             )
             + self._terminating_character
@@ -39,6 +41,18 @@ class ConfigurationReceiver:
         self._handshakeMessage = (
             json.dumps({"protocol": "json", "version": 1}) + self._terminating_character
         )
+
+    def _login(self):  # todo: move to auth class
+        login_url = (
+            self._app_configuration.baseApiUrl + self._app_configuration.loginPath
+        )
+        deviceId = self._device_id_provider.device_id
+        login_payload = {
+            "username": "Device" + str(deviceId).replace("-", ""),
+            "password": deviceId,
+        }
+        response = requests.post(url=login_url, data=login_payload)
+        return response.json()["accessToken"]
 
     async def connect(self):
         ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)

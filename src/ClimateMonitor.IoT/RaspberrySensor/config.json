@@ -3,5 +3,5 @@
   "registerDevicePath": "users/register-device",
   "uploadDataPath": "sensors",
   "websocketAddress": "wss://localhost:7248/configuration",
-  "userId": ""
+  "userId": "00000000-0000-0000-0000-000000000000"
 }

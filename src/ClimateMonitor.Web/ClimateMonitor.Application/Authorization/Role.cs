@@ -2,6 +2,6 @@ namespace ClimateMonitor.Application.Authorization;
 
 public enum Role
 {
-    Device,
+    Device = 1,
     User
 }

@@ -4,7 +4,8 @@ from api.configuration_receiver import ConfigurationReceiver
 from api.data_sender import DataSender
 from api.safe_data_sender import SafeDataSender
 from api.send_record_retryer import SendRecordRetryer
-from models.app_configuration import read_configuration_file
+from models.app_configuration import AppConfiguration
+from models.device_id_provider import DeviceIdProvider
 from schedule_manager.schedule_manager import ScheduleManager
 from sensor.configuration_service import ConfigurationService
 from sensor.sensor_reader import SensorReader
@@ -29,10 +30,11 @@ async def main():
     asyncio.set_event_loop(loop)
 
     config_file_path = "config.json"
-    app_config = read_configuration_file(config_file_path)
+    app_config = AppConfiguration.read_configuration_file(config_file_path)
+    device_id_provider = DeviceIdProvider(app_config)
 
     config_service = ConfigurationService()
-    configuration_receiver = ConfigurationReceiver(app_config)
+    configuration_receiver = ConfigurationReceiver(app_config, device_id_provider)
 
     sensor_reader = SensorReader(config_service)
     data_sender = DataSender(app_config)

@@ -16,5 +16,7 @@ class DataSender:
             self._app_configuration.baseApiUrl + self._app_configuration.uploadDataPath
         )
         payload = json.dumps(record)
-        response = requests.post(url, json=payload)
+        accessToken = ""  # todo: use correct access token
+        headers = {"Authorization": "Bearer " + accessToken}
+        response = requests.post(url, json=payload, headers=headers)
         return response
