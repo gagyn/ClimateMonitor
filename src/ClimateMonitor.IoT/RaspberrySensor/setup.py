@@ -4,6 +4,7 @@ from api.configuration_receiver import ConfigurationReceiver
 from api.data_sender import DataSender
 from api.safe_data_sender import SafeDataSender
 from api.send_record_retryer import SendRecordRetryer
+from api.token_provider import TokenProvider
 from models.app_configuration import AppConfiguration
 from models.device_id_provider import DeviceIdProvider
 from schedule_manager.schedule_manager import ScheduleManager
@@ -36,8 +37,9 @@ async def main():
     config_service = ConfigurationService()
     configuration_receiver = ConfigurationReceiver(app_config, device_id_provider)
 
+    token_provider = TokenProvider()
     sensor_reader = SensorReader(config_service)
-    data_sender = DataSender(app_config)
+    data_sender = DataSender(app_config, token_provider)
     send_record_retryer = SendRecordRetryer(data_sender)
     safe_data_sender = SafeDataSender(app_config, data_sender, send_record_retryer)
     schedule_manager = ScheduleManager(
