@@ -1,7 +1,6 @@
 import json
 import ssl
 import time
-import requests
 import websockets
 import logging
 from models.app_configuration import AppConfiguration
@@ -41,18 +40,6 @@ class ConfigurationReceiver:
         self._handshakeMessage = (
             json.dumps({"protocol": "json", "version": 1}) + self._terminating_character
         )
-
-    def _login(self):  # todo: move to auth class
-        login_url = (
-            self._app_configuration.baseApiUrl + self._app_configuration.loginPath
-        )
-        deviceId = self._device_id_provider.device_id
-        login_payload = {
-            "username": "Device" + str(deviceId).replace("-", ""),
-            "password": deviceId,
-        }
-        response = requests.post(url=login_url, data=login_payload)
-        return response.json()["accessToken"]
 
     async def connect(self):
         ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
