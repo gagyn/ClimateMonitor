@@ -33,5 +33,5 @@ class DeviceIdProvider:
             + self._app_configuration.registerDevicePath
         )
         payload = json.dumps({"userId": self._app_configuration.userId})
-        response = requests.post(url, json=payload)
+        response = requests.post(url, json=payload, verify=False)
         return UUID(response.text)

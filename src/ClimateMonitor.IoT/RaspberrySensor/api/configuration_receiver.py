@@ -3,6 +3,7 @@ import ssl
 import time
 import websockets
 import logging
+from api.token_provider import TokenProvider
 from models.app_configuration import AppConfiguration
 from models.device_id_provider import DeviceIdProvider
 from models.sensors_configuration import SensorsConfiguration
@@ -22,17 +23,21 @@ class ConfigurationReceiver:
     _terminating_character = chr(0x1E)
 
     def __init__(
-        self, app_configuration: AppConfiguration, device_id_provider: DeviceIdProvider
+        self,
+        app_configuration: AppConfiguration,
+        device_id_provider: DeviceIdProvider,
+        token_provider: TokenProvider,
     ):
         self._app_configuration = app_configuration
         self._device_id_provider = device_id_provider
+        token = token_provider.getAccessToken()
         self._get_configuration_message = (
             json.dumps(
                 {
                     "type": 1,
-                    "headers": {},
+                    "headers": {"Authorization": "Bearer " + token},
                     "target": "GetConfiguration",
-                    "arguments": [str(device_id_provider.device_id)],
+                    "arguments": [],
                 }
             )
             + self._terminating_character
