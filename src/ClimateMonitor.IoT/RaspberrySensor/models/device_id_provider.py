@@ -13,9 +13,9 @@ class DeviceIdProvider:
         self._app_configuration = app_configuration
 
         if os.path.exists(self._device_user_filename):
-            self._device_id = self._read_device_id_file()
+            self.device_id = self._read_device_id_file()
         else:
-            self._device_id = self._register_device()
+            self.device_id = self._register_device()
             self._write_device_id_file()
 
     def _read_device_id_file(self):
@@ -25,13 +25,17 @@ class DeviceIdProvider:
 
     def _write_device_id_file(self):
         with open(self._device_user_filename, "w") as file:
-            file.write(json.dumps({"deviceId": self._device_id}))
+            file.write(json.dumps({"deviceId": str(self.device_id)}))
 
     def _register_device(self):
         url = (
             self._app_configuration.baseApiUrl
             + self._app_configuration.registerDevicePath
         )
-        payload = json.dumps({"userId": self._app_configuration.userId})
-        response = requests.post(url, json=payload, verify=False)
-        return UUID(response.text)
+        payload = {"userId": self._app_configuration.userId}
+        response = requests.post(
+            url,
+            json=payload,
+            verify=False,
+        )
+        return UUID(response.text.strip('"'))

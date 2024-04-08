@@ -34,10 +34,12 @@ async def main():
     app_config = AppConfiguration.read_configuration_file(config_file_path)
     device_id_provider = DeviceIdProvider(app_config)
 
-    config_service = ConfigurationService()
-    configuration_receiver = ConfigurationReceiver(app_config, device_id_provider)
+    token_provider = TokenProvider(app_config, device_id_provider)
+    config_service = ConfigurationService(app_config)
+    configuration_receiver = ConfigurationReceiver(
+        app_config, device_id_provider, token_provider
+    )
 
-    token_provider = TokenProvider()
     sensor_reader = SensorReader(config_service)
     data_sender = DataSender(app_config, token_provider)
     send_record_retryer = SendRecordRetryer(data_sender)
