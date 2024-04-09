@@ -1,3 +1,4 @@
+import asyncio
 import json
 import ssl
 import time
@@ -30,6 +31,7 @@ class ConfigurationReceiver:
     ):
         self._app_configuration = app_configuration
         self._device_id_provider = device_id_provider
+        self._token_provider = token_provider
         token = token_provider.getAccessToken()
         self._get_configuration_message = (
             json.dumps(
@@ -51,11 +53,14 @@ class ConfigurationReceiver:
         localhost_pem = "test_localhost.pem"
         ssl_context.load_verify_locations(localhost_pem)
 
+        headers = {"Authorization": f"Bearer {self._token_provider.getAccessToken()}"}
         print("Waiting for connection...")
         while True:
             try:
                 async for websocket in websockets.connect(
-                    uri=self._app_configuration.websocketAddress, ssl=ssl_context
+                    uri=self._app_configuration.websocketAddress,
+                    ssl=ssl_context,
+                    extra_headers=headers,
                 ):
                     print("Websocket connected.")
                     await websocket.send(self._handshakeMessage)
@@ -70,7 +75,7 @@ class ConfigurationReceiver:
 
             except Exception:
                 logging.exception("message")
-                time.sleep(3)
+                await asyncio.sleep(3)
 
     def add_observer(self, observer: ConfigurationObserver) -> None:
         self._observers.append(observer)
