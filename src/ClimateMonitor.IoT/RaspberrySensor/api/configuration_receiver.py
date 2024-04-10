@@ -1,8 +1,8 @@
 import asyncio
 import json
 import ssl
-import time
-import websockets
+from typing import NoReturn
+from signalrcore.hub_connection_builder import HubConnectionBuilder
 import logging
 from api.token_provider import TokenProvider
 from models.app_configuration import AppConfiguration
@@ -48,34 +48,32 @@ class ConfigurationReceiver:
             json.dumps({"protocol": "json", "version": 1}) + self._terminating_character
         )
 
-    async def connect(self):
-        ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-        localhost_pem = "test_localhost.pem"
-        ssl_context.load_verify_locations(localhost_pem)
-
-        headers = {"Authorization": f"Bearer {self._token_provider.getAccessToken()}"}
+    async def connect(self) -> NoReturn:
+        hub_connection = (
+            HubConnectionBuilder()
+            .with_url(
+                self._app_configuration.websocketAddress,
+                options={
+                    "access_token_factory": lambda: self._token_provider.getAccessToken(),
+                    "verify_ssl": False,
+                },
+            )
+            .configure_logging(logging.DEBUG)
+            .with_automatic_reconnect(
+                {
+                    "type": "raw",
+                    "keep_alive_interval": 10,
+                    "reconnect_interval": 5,
+                    "max_attempts": 5,
+                }
+            )
+            .build()
+        )
         print("Waiting for connection...")
+        hub_connection.on("UpdateConfiguration", self._handle_new_config)
         while True:
-            try:
-                async for websocket in websockets.connect(
-                    uri=self._app_configuration.websocketAddress,
-                    ssl=ssl_context,
-                    extra_headers=headers,
-                ):
-                    print("Websocket connected.")
-                    await websocket.send(self._handshakeMessage)
-
-                    print("Sent handshake.")
-                    print(await websocket.recv())
-
-                    await websocket.send(self._get_configuration_message)
-                    print("DeviceId sent.")
-
-                    await self._handler(websocket)
-
-            except Exception:
-                logging.exception("message")
-                await asyncio.sleep(3)
+            hub_connection.start()
+            await asyncio.sleep(1)
 
     def add_observer(self, observer: ConfigurationObserver) -> None:
         self._observers.append(observer)
@@ -83,15 +81,10 @@ class ConfigurationReceiver:
     def remove_observer(self, observer: ConfigurationObserver) -> None:
         self._observers.remove(observer)
 
-    async def _handler(self, websocket):
-        async for message in websocket:
-            print("Got message. Content:", message)
-            if "UpdateConfiguration" not in message:
-                continue
-
-            config = self._deserialize_response(message)
-            self._notify_observers(config)
-            print("All observers notified.")
+    async def _handle_new_config(self, message):
+        config = self._deserialize_response(message)
+        self._notify_observers(config)
+        print("All observers notified.")
 
     def _deserialize_response(self, message: str):
         message = message.rstrip(self._terminating_character)
