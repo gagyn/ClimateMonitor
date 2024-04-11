@@ -33,17 +33,7 @@ class ConfigurationReceiver:
         self._device_id_provider = device_id_provider
         self._token_provider = token_provider
         token = token_provider.getAccessToken()
-        self._get_configuration_message = (
-            json.dumps(
-                {
-                    "type": 1,
-                    "headers": {"Authorization": "Bearer " + token},
-                    "target": "GetConfiguration",
-                    "arguments": [],
-                }
-            )
-            + self._terminating_character
-        )
+        self._get_configuration_message = "GetConfiguration"
         self._handshakeMessage = (
             json.dumps({"protocol": "json", "version": 1}) + self._terminating_character
         )
@@ -71,8 +61,10 @@ class ConfigurationReceiver:
         )
         print("Waiting for connection...")
         hub_connection.on("UpdateConfiguration", self._handle_new_config)
+        hub_connection.start()
+        hub_connection.send(self._get_configuration_message, [])
+        hub_connection.on_close(hub_connection.start)
         while True:
-            hub_connection.start()
             await asyncio.sleep(1)
 
     def add_observer(self, observer: ConfigurationObserver) -> None:

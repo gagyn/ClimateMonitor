@@ -12,7 +12,7 @@ public class SensorConfigurationHub(IMediator mediator, IUserContext userContext
 {
     public async Task GetConfiguration()
     {
-        var sensorConfiguration = mediator.Send(new FindConfigurationQuery(userContext.Id));
+        var sensorConfiguration = await mediator.Send(new FindConfigurationQuery(userContext.Id));
         await Clients.Caller.SendAsync("UpdateConfiguration", sensorConfiguration);
     }
 }
