@@ -2,7 +2,8 @@ import asyncio
 import json
 import ssl
 from typing import NoReturn
-from signalrcore.hub_connection_builder import HubConnectionBuilder
+from uuid import UUID
+from signalrcore.hub_connection_builder import HubConnectionBuilder  # type: ignore
 import logging
 from api.token_provider import TokenProvider
 from models.app_configuration import AppConfiguration
@@ -32,7 +33,6 @@ class ConfigurationReceiver:
         self._app_configuration = app_configuration
         self._device_id_provider = device_id_provider
         self._token_provider = token_provider
-        token = token_provider.getAccessToken()
         self._get_configuration_message = "GetConfiguration"
         self._handshakeMessage = (
             json.dumps({"protocol": "json", "version": 1}) + self._terminating_character
@@ -62,8 +62,9 @@ class ConfigurationReceiver:
         print("Waiting for connection...")
         hub_connection.on("UpdateConfiguration", self._handle_new_config)
         hub_connection.start()
+        await asyncio.sleep(1)
+        # hub_connection.on_close(hub_connection.start)
         hub_connection.send(self._get_configuration_message, [])
-        hub_connection.on_close(hub_connection.start)
         while True:
             await asyncio.sleep(1)
 
@@ -73,19 +74,18 @@ class ConfigurationReceiver:
     def remove_observer(self, observer: ConfigurationObserver) -> None:
         self._observers.remove(observer)
 
-    async def _handle_new_config(self, message):
+    def _handle_new_config(self, message: list[dict[str, dict[UUID, int]]]):
         config = self._deserialize_response(message)
         self._notify_observers(config)
         print("All observers notified.")
 
-    def _deserialize_response(self, message: str):
-        message = message.rstrip(self._terminating_character)
-        parsedJson = json.loads(message)["arguments"][0]
+    def _deserialize_response(self, message: list[dict[str, dict[UUID, int]]]):
+        configuration = message[0]
         sensors_config = SensorsConfiguration(
-            parsedJson["readingFrequencyCrons"],
-            parsedJson["pinsDHT11"],
-            parsedJson["pinsDHT22"],
-            parsedJson["pinsDallas18b20"],
+            configuration["readingFrequencyCrons"],
+            configuration["pinsDHT11"],
+            configuration["pinsDHT22"],
+            configuration["pinsDallas18b20"],
         )
         return sensors_config
 
