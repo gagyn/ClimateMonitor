@@ -1,12 +1,15 @@
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using ClimateMonitor.Infrastructure;
 using ClimateMonitor.Web.API.Authorization;
 using ClimateMonitor.Web.API.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-//todo: https://learn.microsoft.com/en-us/aspnet/core/fundamentals/websockets?view=aspnetcore-8.0
+builder.Configuration.AddEnvironmentVariables();
+var openTelemetryConnectionString = builder.Configuration.GetValue<string>("AzureMonitor:ConnectionString");
+if (!string.IsNullOrEmpty(openTelemetryConnectionString))
+{
+    builder.Services.AddOpenTelemetry().UseAzureMonitor(options => options.ConnectionString = openTelemetryConnectionString);
+}
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
