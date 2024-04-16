@@ -1,8 +1,10 @@
 {
-  "baseApiUrl": "https://localhost:7248/",
+  "baseApiUrl": "https://climate-monitor.scm.azurewebsites.net/",
+  "baseApiUrlLocal": "https://localhost:7248/",
   "registerDevicePath": "users/register-device",
   "loginPath": "users/login",
   "uploadDataPath": "sensors",
-  "websocketAddress": "wss://localhost:7248/configuration",
+  "websocketAddress": "wss://climate-monitor.scm.azurewebsites.net/configuration",
+  "websocketAddressLocal": "wss://localhost:7248/configuration",
   "userId": "00000000-0000-0000-0000-000000000000"
 }
