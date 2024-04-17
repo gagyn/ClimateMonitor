@@ -36,6 +36,7 @@ class DeviceIdProvider:
         payload = {"userId": self._app_configuration.userId}
         response = requests.post(
             url,
+            headers={"Content-type": "application/json", "Accept": "application/json"},
             data=json.dumps(payload),
             verify=False,
         )
