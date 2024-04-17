@@ -1,3 +1,4 @@
+import logging
 import os
 from models.app_configuration import AppConfiguration
 import requests
@@ -35,7 +36,9 @@ class DeviceIdProvider:
         payload = {"userId": self._app_configuration.userId}
         response = requests.post(
             url,
-            json=payload,
+            data=json.dumps(payload),
             verify=False,
         )
+        if response.status_code != 200:
+            logging.error(response.status_code)
         return UUID(response.text.strip('"'))

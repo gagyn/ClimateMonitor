@@ -38,6 +38,14 @@ Using the application in your environment allows you to **collect and analyse** 
 docker run --name sql_database -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=yourStrong(!)Password' -p 1434:1433 -d mcr.microsoft.com/mssql/server:2022-latest
 ```
 
+### 1.5. Running Data collector on sensor device
+
+1. Pull the repository on a Raspberry PI.
+2. Go to `src/ClimateMonitor.IoT/RaspberrySensor` path.
+3. Run `python3 -m venv venv` and `source venv/bin/activate`.
+4. Install required packages using `pip3 install -r requirements.txt`.
+5. Run the script `python3 setup.py`.
+
 ## 2. Domain
 
 ### 2.0. Overview
