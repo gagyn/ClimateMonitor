@@ -4,6 +4,6 @@ namespace ClimateMonitor.Domain.Repositories;
 
 public interface IDeviceRepository : IBaseRepository
 {
-    Task<DeviceEntity> FindOrThrow(Guid deviceId, CancellationToken cancellationToken);
+    Task<DeviceEntity> FindOrThrow(Guid deviceId, Guid ownerUserId, CancellationToken cancellationToken);
     void Add(DeviceEntity entity);
 }

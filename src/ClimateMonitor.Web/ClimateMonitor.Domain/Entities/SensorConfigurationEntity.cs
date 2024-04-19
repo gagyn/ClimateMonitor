@@ -33,14 +33,13 @@ public class SensorConfigurationEntity : BaseEntity
     }
 
     public static SensorConfigurationEntity Create(
-        Guid sensorId,
         Guid deviceId,
         string pin,
         SensorTypeEntity sensorType,
         string frequencyCron,
         TimeProvider timeProvider,
         string createdBy)
-        => new(sensorId, deviceId, pin, sensorType, frequencyCron, timeProvider, createdBy);
+        => new(sensorId: Guid.NewGuid(), deviceId, pin, sensorType, frequencyCron, timeProvider, createdBy);
 
     public void Update(string pin, SensorTypeEntity sensorType, bool activate, string frequencyCron, TimeProvider timeProvider, string updatedBy)
     {

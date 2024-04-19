@@ -36,13 +36,33 @@ public class SensorsController(ILogger<SensorsController> logger, IHubContext<Se
     public async Task<IActionResult> FindConfiguration([FromRoute] Guid deviceId)
         => Ok(await mediator.Send(new FindConfigurationQuery(deviceId)));
 
-    //[Authorize(Policies.User)]
-    //[HttpPut("configuration/{deviceId}")]
-    //public async Task<IActionResult> UpdateConfiguration([FromRoute] Guid deviceId, [FromBody] UpdateConfiguration command)
-    //{
-    //    await mediator.Send(command);
-    //    return Ok();
-    //}
+    [Authorize(Policies.User)]
+    [HttpPost("configuration/{deviceId}")]
+    public async Task<IActionResult> AddSensorConfiguration(
+        [FromRoute] Guid deviceId,
+        [FromBody] AddSensorConfigurationCommand command)
+    {
+        await mediator.Send(command with
+        {
+            DeviceId = deviceId
+        });
+        return Ok();
+    }
+    
+    [Authorize(Policies.User)]
+    [HttpPut("configuration/{deviceId}/{sensorId}")]
+    public async Task<IActionResult> UpdateSensorConfiguration(
+        [FromRoute] Guid deviceId,
+        [FromRoute] Guid sensorId,
+        [FromBody] UpdateSensorConfigurationCommand command)
+    {
+        await mediator.Send(command with
+        {
+            DeviceId = deviceId,
+            SensorId = sensorId
+        });
+        return Ok();
+    }
 
     [HttpGet("send-message")]
     public async Task SendTestMessage()
