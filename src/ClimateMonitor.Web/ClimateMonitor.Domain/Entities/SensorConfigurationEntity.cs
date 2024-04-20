@@ -2,7 +2,7 @@
 
 public class SensorConfigurationEntity : BaseEntity
 {
-    public Guid SensorId { get; private set; }
+    public Guid SensorId { get; }
     public Guid DeviceId { get; private set; }
     public string Pin { get; private set; }
     public SensorTypeEntity SensorType { get; private set; }
@@ -16,7 +16,6 @@ public class SensorConfigurationEntity : BaseEntity
     }
 
     private SensorConfigurationEntity(
-        Guid sensorId,
         Guid deviceId,
         string pin,
         SensorTypeEntity sensorType,
@@ -24,7 +23,6 @@ public class SensorConfigurationEntity : BaseEntity
         TimeProvider timeProvider,
         string createdBy) : base(timeProvider, createdBy)
     {
-        SensorId = sensorId;
         DeviceId = deviceId;
         Pin = pin;
         SensorType = sensorType;
@@ -39,7 +37,7 @@ public class SensorConfigurationEntity : BaseEntity
         string frequencyCron,
         TimeProvider timeProvider,
         string createdBy)
-        => new(sensorId: Guid.NewGuid(), deviceId, pin, sensorType, frequencyCron, timeProvider, createdBy);
+        => new(deviceId, pin, sensorType, frequencyCron, timeProvider, createdBy);
 
     public void Update(string pin, SensorTypeEntity sensorType, bool activate, string frequencyCron, TimeProvider timeProvider, string updatedBy)
     {

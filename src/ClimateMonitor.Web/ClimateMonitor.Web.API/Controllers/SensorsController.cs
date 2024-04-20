@@ -26,13 +26,12 @@ public class SensorsController(ILogger<SensorsController> logger, IHubContext<Se
         return Ok();
     }
 
-    //[Authorize(Policies.User)]
-    //[HttpGet("devices")]
-    //public async Task<IActionResult> GetDevices()
-    //    => Ok(await mediator.Send(new GetDevicesQuery()));
-
     [Authorize(Policies.User)]
-    [HttpGet("configuration/{deviceId}")]
+    [HttpGet("devices")]
+    public async Task<IActionResult> GetDevices()
+        => Ok(await mediator.Send(new GetDevicesQuery()));
+
+    [HttpGet("configuration/{deviceId:guid}")]
     public async Task<IActionResult> FindConfiguration([FromRoute] Guid deviceId)
         => Ok(await mediator.Send(new FindConfigurationQuery(deviceId)));
 
@@ -50,7 +49,7 @@ public class SensorsController(ILogger<SensorsController> logger, IHubContext<Se
     }
     
     [Authorize(Policies.User)]
-    [HttpPut("configuration/{deviceId}/{sensorId}")]
+    [HttpPut("configuration/{deviceId:guid}/{sensorId:guid}")]
     public async Task<IActionResult> UpdateSensorConfiguration(
         [FromRoute] Guid deviceId,
         [FromRoute] Guid sensorId,
