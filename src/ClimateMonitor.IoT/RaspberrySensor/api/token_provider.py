@@ -15,11 +15,8 @@ class TokenProvider:
         self._valid_till = datetime.min
 
     def getAccessToken(self):
-        if self._valid_till < datetime.now():
-            accessToken, expiresIn = self._login()
-            self._access_token = accessToken
-            self._valid_till = datetime.now() + timedelta(seconds=expiresIn)
-        return self._access_token
+        accessToken, expiresIn = self._login()
+        return accessToken
 
     def _login(self) -> tuple[str, int]:
         login_url = (

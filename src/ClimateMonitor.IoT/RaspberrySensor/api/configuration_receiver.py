@@ -52,9 +52,9 @@ class ConfigurationReceiver:
             .with_automatic_reconnect(
                 {
                     "type": "raw",
-                    "keep_alive_interval": 10,
-                    "reconnect_interval": 5,
-                    "max_attempts": 5,
+                    "keep_alive_interval": 30,
+                    "reconnect_interval": 20,
+                    "max_attempts": 10,
                 }
             )
             .build()
