@@ -11,8 +11,8 @@ if (!string.IsNullOrEmpty(openTelemetryConnectionString))
     builder.Services.AddOpenTelemetry().UseAzureMonitor(options => options.ConnectionString = openTelemetryConnectionString);
 }
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
@@ -39,7 +39,14 @@ app.UseAuthorization();
 app.UseWebSockets();
 
 app.MapControllers();
+app.UseStaticFiles();
 app.MapHub<SensorConfigurationHub>("/configuration");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+    endpoints.MapControllers();
+});
 
 await app.InitializeDatabase();
 
