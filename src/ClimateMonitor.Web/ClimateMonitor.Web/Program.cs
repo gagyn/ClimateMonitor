@@ -1,7 +1,7 @@
 using Azure.Monitor.OpenTelemetry.AspNetCore;
 using ClimateMonitor.Infrastructure;
-using ClimateMonitor.Web.API.Authorization;
-using ClimateMonitor.Web.API.Hubs;
+using ClimateMonitor.Web.Authorization;
+using ClimateMonitor.Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -42,11 +42,8 @@ app.MapControllers();
 app.UseStaticFiles();
 app.MapHub<SensorConfigurationHub>("/configuration");
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapRazorPages();
-    endpoints.MapControllers();
-});
+app.MapRazorPages();
+app.MapControllers();
 
 await app.InitializeDatabase();
 

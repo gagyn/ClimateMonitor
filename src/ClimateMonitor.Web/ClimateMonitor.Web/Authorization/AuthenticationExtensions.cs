@@ -3,7 +3,7 @@ using ClimateMonitor.Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 
-namespace ClimateMonitor.Web.API.Authorization;
+namespace ClimateMonitor.Web.Authorization;
 
 public static class AuthenticationExtensions
 {

@@ -1,7 +1,7 @@
 ﻿using ClimateMonitor.Application.Authorization;
 using Microsoft.AspNetCore.Authorization;
 
-namespace ClimateMonitor.Web.API.Authorization;
+namespace ClimateMonitor.Web.Authorization;
 
 public static class Policies
 {

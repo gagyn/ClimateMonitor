@@ -1,11 +1,11 @@
 ﻿using ClimateMonitor.Application.Authorization;
 using ClimateMonitor.Application.Queries;
-using ClimateMonitor.Web.API.Authorization;
+using ClimateMonitor.Web.Authorization;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
-namespace ClimateMonitor.Web.API.Hubs;
+namespace ClimateMonitor.Web.Hubs;
 
 [Authorize(Policies.Device)]
 public class SensorConfigurationHub(IMediator mediator, IUserContext userContext) : Hub

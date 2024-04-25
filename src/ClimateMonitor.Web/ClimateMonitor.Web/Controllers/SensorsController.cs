@@ -1,13 +1,13 @@
 using ClimateMonitor.Application.Commands;
 using ClimateMonitor.Application.Queries;
-using ClimateMonitor.Web.API.Authorization;
-using ClimateMonitor.Web.API.Hubs;
+using ClimateMonitor.Web.Authorization;
+using ClimateMonitor.Web.Hubs;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
-namespace ClimateMonitor.Web.API.Controllers;
+namespace ClimateMonitor.Web.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -47,7 +47,7 @@ public class SensorsController(ILogger<SensorsController> logger, IHubContext<Se
         });
         return Ok();
     }
-    
+
     [Authorize(Policies.User)]
     [HttpPut("configuration/{deviceId:guid}/{sensorId:guid}")]
     public async Task<IActionResult> UpdateSensorConfiguration(

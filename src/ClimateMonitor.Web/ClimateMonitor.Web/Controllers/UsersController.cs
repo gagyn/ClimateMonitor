@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ClimateMonitor.Web.API.Controllers;
+namespace ClimateMonitor.Web.Controllers;
 
 [ApiController]
 [Route("[controller]")]
