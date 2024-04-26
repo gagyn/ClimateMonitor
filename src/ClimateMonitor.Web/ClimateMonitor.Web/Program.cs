@@ -2,6 +2,7 @@ using Azure.Monitor.OpenTelemetry.AspNetCore;
 using ClimateMonitor.Infrastructure;
 using ClimateMonitor.Web.Authorization;
 using ClimateMonitor.Web.Hubs;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
@@ -39,7 +40,12 @@ app.UseAuthorization();
 app.UseWebSockets();
 
 app.MapControllers();
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "ClientApp/build")),
+    RequestPath = ""
+});
 app.MapHub<SensorConfigurationHub>("/configuration");
 
 app.MapRazorPages();
