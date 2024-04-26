@@ -36,7 +36,7 @@ public class SensorsController(ILogger<SensorsController> logger, IHubContext<Se
         => Ok(await mediator.Send(new FindConfigurationQuery(deviceId)));
 
     [Authorize(Policies.User)]
-    [HttpPost("configuration/{deviceId}")]
+    [HttpPost("configuration/{deviceId:guid}")]
     public async Task<IActionResult> AddSensorConfiguration(
         [FromRoute] Guid deviceId,
         [FromBody] AddSensorConfigurationCommand command)
