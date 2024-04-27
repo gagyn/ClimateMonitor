@@ -34,9 +34,11 @@ jobs:
         run: dotnet publish ./src/ClimateMonitor.Web/ClimateMonitor.Web.sln -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
       - name: npm install (ci)
+        working-directory: ./src/ClimateMonitor.Web/ClimateMonitor.Web/ClientApp/
         run: npm ci
 
       - name: npm run build
+        working-directory: ./src/ClimateMonitor.Web/ClimateMonitor.Web/ClientApp/
         run: npm run build
         
       - name: Upload artifact for deployment job
