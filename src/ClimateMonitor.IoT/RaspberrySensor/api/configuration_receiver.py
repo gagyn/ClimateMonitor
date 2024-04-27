@@ -21,22 +21,14 @@ class ConfigurationObserver:
 class ConfigurationReceiver:
     _app_configuration: AppConfiguration
     _observers: list[ConfigurationObserver] = []
-    _get_configuration_message: str
-    _terminating_character = chr(0x1E)
 
     def __init__(
         self,
         app_configuration: AppConfiguration,
-        device_id_provider: DeviceIdProvider,
         token_provider: TokenProvider,
     ):
         self._app_configuration = app_configuration
-        self._device_id_provider = device_id_provider
         self._token_provider = token_provider
-        self._get_configuration_message = "GetConfiguration"
-        self._handshakeMessage = (
-            json.dumps({"protocol": "json", "version": 1}) + self._terminating_character
-        )
 
     async def connect(self) -> NoReturn:
         hub_connection = (
@@ -60,11 +52,8 @@ class ConfigurationReceiver:
             .build()
         )
         print("Waiting for connection...")
-        hub_connection.on("UpdateConfiguration", self._handle_new_config)
+        hub_connection.on("ConfigurationRecieved", self._handle_new_config)
         hub_connection.start()
-        await asyncio.sleep(1)
-        # hub_connection.on_close(hub_connection.start)
-        hub_connection.send(self._get_configuration_message, [])
         while True:
             await asyncio.sleep(1)
 

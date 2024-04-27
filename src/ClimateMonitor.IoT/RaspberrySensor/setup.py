@@ -11,11 +11,6 @@ from schedule_manager.schedule_manager import ScheduleManager
 from sensor.configuration_service import ConfigurationService
 from sensor.sensor_reader import SensorReader
 
-# Steps realized by this program
-# 1. Request to API for downloading currect configuration
-# 2. Register websockets to API, listening for configuration changes
-# 3. Read jobs are scheduled for each sensor seperately, using schedule package
-#
 # TODO:
 # https://schedule.readthedocs.io/en/stable/exception-handling.html
 
@@ -36,9 +31,7 @@ async def main():
 
     token_provider = TokenProvider(app_config, device_id_provider)
     config_service = ConfigurationService(app_config)
-    configuration_receiver = ConfigurationReceiver(
-        app_config, device_id_provider, token_provider
-    )
+    configuration_receiver = ConfigurationReceiver(app_config, token_provider)
 
     sensor_reader = SensorReader(config_service)
     data_sender = DataSender(app_config, token_provider)

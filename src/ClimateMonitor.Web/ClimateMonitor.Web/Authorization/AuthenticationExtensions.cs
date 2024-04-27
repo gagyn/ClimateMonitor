@@ -2,6 +2,7 @@ using ClimateMonitor.Domain.Entities;
 using ClimateMonitor.Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using System.Security.Claims;
 
 namespace ClimateMonitor.Web.Authorization;
 
@@ -80,5 +81,6 @@ public static class AuthenticationExtensions
 
 public class DeviceIdProvider : IUserIdProvider
 {
-    public string? GetUserId(HubConnectionContext connection) => connection.User?.Identity?.Name;
+    public string? GetUserId(HubConnectionContext connection)
+        => connection.User?.Claims!.First(x => x.Type == ClaimTypes.NameIdentifier).Value;
 }

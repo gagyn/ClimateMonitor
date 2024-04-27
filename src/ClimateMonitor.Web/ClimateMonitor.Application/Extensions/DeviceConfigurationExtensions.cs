@@ -1,7 +1,7 @@
 using ClimateMonitor.Application.Models;
 using ClimateMonitor.Domain.Entities;
 
-namespace ClimateMonitor.Infrastructure.Extensions;
+namespace ClimateMonitor.Application.Extensions;
 
 public static class DeviceConfigurationExtensions
 {

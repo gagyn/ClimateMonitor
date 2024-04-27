@@ -1,4 +1,5 @@
 using Azure.Monitor.OpenTelemetry.AspNetCore;
+using ClimateMonitor.Application.Abstraction;
 using ClimateMonitor.Infrastructure;
 using ClimateMonitor.Web.Authorization;
 using ClimateMonitor.Web.Hubs;
@@ -21,6 +22,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddAuthenticationWithBearer();
 builder.Services.AddAuthorization(options => options.AddPolicies());
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("ClimateMonitorDatabase")!);
+builder.Services.AddScoped<IDeviceConnection, DeviceConnection>();
 
 var app = builder.Build();
 

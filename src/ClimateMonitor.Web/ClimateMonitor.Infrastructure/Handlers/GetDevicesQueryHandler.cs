@@ -1,8 +1,8 @@
 using ClimateMonitor.Application.Authorization;
+using ClimateMonitor.Application.Extensions;
 using ClimateMonitor.Application.Models;
 using ClimateMonitor.Application.Queries;
 using ClimateMonitor.Infrastructure.Database;
-using ClimateMonitor.Infrastructure.Extensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
