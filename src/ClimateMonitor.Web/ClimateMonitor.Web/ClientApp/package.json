@@ -19,10 +19,13 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && npm run build-rename",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "watch": "npm-watch"
+    "watch": "npm-watch",
+    "build-rename": "npm run build-rename-js && npm run build-rename-css",
+    "build-rename-js": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace \"main.\" build\\static\\js\\*",
+    "build-rename-css": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace \"main.\" build\\static\\css\\*"
   },
   "watch": {
     "test": "{src,test}/*.js"
@@ -44,5 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "renamer": "^5.0.0"
   }
 }
