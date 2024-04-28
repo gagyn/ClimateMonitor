@@ -24,8 +24,8 @@
     "eject": "react-scripts eject",
     "watch": "npm-watch",
     "build-rename": "npm run build-rename-js && npm run build-rename-css",
-    "build-rename-js": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace \"main.\" build\\static\\js\\*",
-    "build-rename-css": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace \"main.\" build\\static\\css\\*"
+    "build-rename-js": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace \"main.\" build/static/js/*",
+    "build-rename-css": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace \"main.\" build/static/css/*"
   },
   "watch": {
     "test": "{src,test}/*.js"
