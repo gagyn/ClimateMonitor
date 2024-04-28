@@ -41,13 +41,14 @@ jobs:
         working-directory: ./src/ClimateMonitor.Web/ClimateMonitor.Web/ClientApp/
         run: npm run build
 
+      - name: Copy node files to output dir
+        run: mv ./src/ClimateMonitor.Web/ClimateMonitor.Web/ClientApp/build/ ${{env.DOTNET_ROOT}}/myapp/ClientApp/build/
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: |
-            ${{env.DOTNET_ROOT}}/myapp
-            ./src/ClimateMonitor.Web/ClimateMonitor.Web/ClientApp/
+          path: ${{env.DOTNET_ROOT}}/myapp
 
   deploy:
     runs-on: ubuntu-latest
