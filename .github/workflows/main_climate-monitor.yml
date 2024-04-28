@@ -25,7 +25,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
+          node-version: "20.x"
 
       - name: Build with dotnet
         run: dotnet build ./src/ClimateMonitor.Web/ClimateMonitor.Web.sln --configuration Release
@@ -40,12 +40,14 @@ jobs:
       - name: npm run build
         working-directory: ./src/ClimateMonitor.Web/ClimateMonitor.Web/ClientApp/
         run: npm run build
-        
+
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: |
+            ${{env.DOTNET_ROOT}}/myapp
+            ./src/ClimateMonitor.Web/ClimateMonitor.Web/ClientApp/
 
   deploy:
     runs-on: ubuntu-latest
@@ -60,7 +62,7 @@ jobs:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: .net-app
+          name: .net-app with React
 
       - name: Login to Azure
         uses: azure/login@v1
