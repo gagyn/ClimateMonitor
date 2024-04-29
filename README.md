@@ -46,6 +46,30 @@ docker run --name sql_database -e 'ACCEPT_EULA=Y' -e 'MSSQL_SA_PASSWORD=yourStro
 4. Install required packages using `pip3 install -r requirements.txt`.
 5. Run the script `python3 setup.py`.
 
+### 1.6. [Optional] Run Data collector as background service on linux
+
+1. Create .service file using `sudo nano /lib/systemd/system/climate-monitor.service`.
+2. Put the following content:
+
+```sh
+[Unit]
+Description=Climate Monitor Collector
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/bin/sh -c 'cd /home/pi/ClimateMonitor/src/ClimateMonitor.IoT/RaspberrySensor && /home/pi/ClimateMonitor/src/$
+[Install]
+WantedBy=multi-user.target
+```
+
+>***Note:*** **`ExecStart`** may need to be adjusted in your case, depending on your current username and the path where you have the repo clonned locally.
+
+3. Save and close the editor.
+4. Set the permission on the file using `sudo chmod 644 /lib/systemd/system/climate-monitor.service`.
+5. Restart systemd using `sudo systemctl daemon-reload`.
+6. Start the background service using `sudo systemctl enable sample.service`.
+
 ## 2. Domain
 
 ### 2.0. Overview

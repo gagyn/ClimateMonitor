@@ -28,7 +28,16 @@
     "build-rename-css": "renamer --find \"/main\\.[^\\.]+\\./i\" --replace \"main.\" build/static/css/*"
   },
   "watch": {
-    "test": "{src,test}/*.js"
+    "build": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "ts,tsx",
+      "ignore": [
+        "build",
+        "node_modules"
+      ]
+    }
   },
   "eslintConfig": {
     "extends": [
