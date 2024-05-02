@@ -1,23 +1,18 @@
 import SettingsIcon from "@mui/icons-material/Settings";
 import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import Drawer from "@mui/material/Drawer";
-import "./App.css";
-import { LocationBody } from "./components/location-body";
-import { LocationHeader } from "./components/location-header";
-import { Locations } from "./components/locations";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import Container from "@mui/material/Container";
+import { Link } from "react-router-dom";
+import "./App.css";
+import { LocationBody } from "./components/location-body";
+import { LocationHeader } from "./components/location-header";
 
 function App() {
   type Location = {
@@ -45,7 +40,7 @@ function App() {
                 <ListItemIcon>
                   <SettingsIcon />
                 </ListItemIcon>
-                <ListItemText primary="Settings" />
+                <ListItemText primary={<Link to="/settings">Settings</Link>} />
               </ListItemButton>
             </ListItem>
           </List>
