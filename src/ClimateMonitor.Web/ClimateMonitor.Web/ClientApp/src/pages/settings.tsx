@@ -1,4 +1,5 @@
+import { Devices } from "../components/settings/devices";
 
 export function Settings() {
-    return (<div>Settings</div>)
+    return (<Devices />)
 }
