@@ -41,7 +41,6 @@ app.UseAuthorization();
 
 app.UseWebSockets();
 
-app.MapControllers();
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
@@ -52,6 +51,11 @@ app.MapHub<SensorConfigurationHub>("/configuration");
 
 app.MapRazorPages();
 app.MapControllers();
+app.MapControllerRoute(
+    name: "api",
+    pattern: "/api/{controller=Home}/{id?}");
+
+app.MapFallbackToPage("/settings/{*path:nonfile}", "/Index");
 
 await app.InitializeDatabase();
 
