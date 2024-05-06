@@ -3,6 +3,8 @@ using ClimateMonitor.Infrastructure.Database;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Net.Http.Headers;
 
 namespace ClimateMonitor.Web.Authorization;
 
@@ -17,6 +19,7 @@ public static class AuthenticationExtensions
             options.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
             options.DefaultChallengeScheme = IdentityConstants.BearerScheme;
         })
+            .AddCookie(IdentityConstants.ApplicationScheme)
             .AddBearerToken(IdentityConstants.BearerScheme, options => options.Events = new()
             {
                 OnMessageReceived = context =>
@@ -28,6 +31,17 @@ public static class AuthenticationExtensions
                     }
                     return Task.CompletedTask;
                 }
+            }).AddPolicyScheme("JWT_OR_COOKIE", "JWT_OR_COOKIE", options =>
+            {
+                options.ForwardDefaultSelector = context =>
+                {
+                    string? authorization = context.Request.Headers[HeaderNames.Authorization];
+                    if (!string.IsNullOrEmpty(authorization) && authorization.StartsWith("Bearer "))
+                        return IdentityConstants.BearerScheme;
+                
+                    return CookieAuthenticationDefaults.AuthenticationScheme;
+                };
+
             });
         //    .AddJwtBearer(options =>
         //{

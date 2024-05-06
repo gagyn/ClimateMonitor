@@ -23,11 +23,10 @@ public class UsersController(IMediator mediator) : ControllerBase
         => Ok(await mediator.Send(command));
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginUserQuery query)
+    public async Task<IActionResult> Login([FromBody] LoginUserQuery query, [FromQuery] bool useCookies)
     {
         var claimsPrincipal = await mediator.Send(query);
 
-        var useCookies = false;
         var scheme = useCookies ? IdentityConstants.ApplicationScheme : IdentityConstants.BearerScheme;
 
         return SignIn(claimsPrincipal, authenticationScheme: scheme);
