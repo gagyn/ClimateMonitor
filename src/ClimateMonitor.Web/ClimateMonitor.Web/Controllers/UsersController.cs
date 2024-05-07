@@ -1,6 +1,7 @@
 using ClimateMonitor.Application.Commands;
 using ClimateMonitor.Application.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ public class UsersController(IMediator mediator) : ControllerBase
     {
         var claimsPrincipal = await mediator.Send(query);
 
-        var scheme = useCookies ? IdentityConstants.ApplicationScheme : IdentityConstants.BearerScheme;
+        var scheme = useCookies ? CookieAuthenticationDefaults.AuthenticationScheme : IdentityConstants.BearerScheme;
 
         return SignIn(claimsPrincipal, authenticationScheme: scheme);
     }

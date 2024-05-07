@@ -10,16 +10,18 @@ namespace ClimateMonitor.Web.Authorization;
 
 public static class AuthenticationExtensions
 {
+    private const string BearerOrCookieSchema = "BearerOrCookie";
+    
     public static IServiceCollection AddAuthenticationWithBearer(this IServiceCollection serviceCollection)
     {
         // https://stackoverflow.com/questions/77936043/asp-net-core-8-default-identity-token-based-auth-not-working-404-not-found-err
         // https://learn.microsoft.com/en-us/aspnet/core/signalr/authn-and-authz?view=aspnetcore-8.0#built-in-jwt-authentication
         serviceCollection.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme = IdentityConstants.BearerScheme;
-            options.DefaultChallengeScheme = IdentityConstants.BearerScheme;
+            options.DefaultAuthenticateScheme = BearerOrCookieSchema;
+            options.DefaultChallengeScheme = BearerOrCookieSchema;
         })
-            .AddCookie(IdentityConstants.ApplicationScheme)
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddBearerToken(IdentityConstants.BearerScheme, options => options.Events = new()
             {
                 OnMessageReceived = context =>
@@ -31,7 +33,7 @@ public static class AuthenticationExtensions
                     }
                     return Task.CompletedTask;
                 }
-            }).AddPolicyScheme("JWT_OR_COOKIE", "JWT_OR_COOKIE", options =>
+            }).AddPolicyScheme(BearerOrCookieSchema, BearerOrCookieSchema, options =>
             {
                 options.ForwardDefaultSelector = context =>
                 {
