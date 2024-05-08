@@ -5,13 +5,15 @@ import "./App.css";
 import { LocationBody } from "./components/location-body";
 import { LocationHeader } from "./components/location-header";
 import { NavigationPanel } from "./components/navigation-panel";
+import { useMyUser } from "./hooks/useMyUser";
 
 function App() {
+  const user = useMyUser();
   return (
     <div className="App">
       <Box sx={{ diplay: "flex" }}>
         <CssBaseline />
-        <NavigationPanel />
+        <NavigationPanel myUser={user} />
       </Box>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Container>

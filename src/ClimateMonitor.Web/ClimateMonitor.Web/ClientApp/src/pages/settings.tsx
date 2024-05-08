@@ -5,14 +5,16 @@ import { LocationBody } from "../components/location-body";
 import { LocationHeader } from "../components/location-header";
 import { NavigationPanel } from "../components/navigation-panel";
 import { useDevices } from "../hooks/useDevices";
+import { useMyUser } from "../hooks/useMyUser";
 
 export function Settings() {
   const devices = useDevices();
+  const user = useMyUser();
   return (
     <>
       <Box sx={{ diplay: "flex" }}>
         <CssBaseline />
-        <NavigationPanel />
+        <NavigationPanel myUser={user} />
       </Box>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Container>
