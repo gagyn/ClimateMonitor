@@ -1,11 +1,10 @@
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import CssBaseline from "@mui/material/CssBaseline";
-import { LocationBody } from "../components/location-body";
-import { LocationHeader } from "../components/location-header";
 import { NavigationPanel } from "../components/navigation-panel";
 import { useDevices } from "../hooks/useDevices";
 import { useMyUser } from "../hooks/useMyUser";
+import { Devices } from "../components/settings/devices";
 
 export function Settings() {
   const devices = useDevices();
@@ -19,9 +18,7 @@ export function Settings() {
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <Container>
           <p>Settings</p>
-          {devices?.map((x) => (
-            <p>{x.deviceId}</p>
-          ))}
+          <Devices devices={devices ?? []} />
         </Container>
       </Box>
     </>
