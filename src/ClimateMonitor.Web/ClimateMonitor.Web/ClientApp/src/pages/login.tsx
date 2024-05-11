@@ -1,9 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Input } from "@mui/material";
+import { Box, Button, Grid, Input, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { useLogin } from "../hooks/useLogin";
 import { LoginForm } from "../models/loginForm";
+import { useNavigate } from 'react-router-dom';
 
 const schema = yup.object({
     username: yup.string().required(),
@@ -11,7 +12,8 @@ const schema = yup.object({
 }).required();
 
 export function Login() {
-    const { register, handleSubmit, watch, control, formState: { errors } } = useForm<LoginForm>({
+    const navigate = useNavigate();
+    const { handleSubmit, watch, control } = useForm<LoginForm>({
         defaultValues: {
             username: "",
             password: ""
@@ -23,20 +25,40 @@ export function Login() {
 
     const onSubmit = () => {
         login(watch());
+        navigate("/");
     }
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Controller
-                name="username"
-                control={control}
-                render={({ field }) => <Input {...field} />}
-            />
-            <Controller
-                name="password"
-                control={control}
-                render={({ field }) => <Input {...field} />}
-            />
-            <input type="submit" />
-        </form>
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Grid
+                    container
+                    spacing={3}
+                    direction={"column"}
+                    justifyContent={"center"}
+                    alignItems={"center"}
+                >
+                    <Grid item xs={12}>
+                        <Controller
+                            name="username"
+                            control={control}
+                            render={({ field, formState: { errors } }) =>
+                                <TextField label="Username" {...field} error={!!errors.username} />}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Controller
+                            name="password"
+                            control={control}
+                            render={({ field, formState: { errors } }) =>
+                                <TextField label="Password" type='password' {...field} error={!!errors.password} />}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Button type="submit">Login</Button>
+                    </Grid>
+                </Grid>
+
+            </form>
+        </Box>
     )
 }
