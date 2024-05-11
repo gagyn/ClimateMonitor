@@ -6,12 +6,17 @@ import reportWebVitals from "./reportWebVitals";
 import { Settings } from "./pages/settings";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ErrorPage } from "./pages/error-page";
+import { Login } from "./pages/login";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "/login",
+    element: <Login />
   },
   {
     path: "/settings",

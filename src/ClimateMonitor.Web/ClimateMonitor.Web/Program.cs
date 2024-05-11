@@ -56,6 +56,7 @@ app.MapControllerRoute(
     pattern: "/api/{controller=Home}/{id?}");
 
 app.MapFallbackToPage("/settings/{*path:nonfile}", "/settings");
+app.MapFallbackToPage("/login/{*path:nonfile}", "/settings");
 
 await app.InitializeDatabase();
 

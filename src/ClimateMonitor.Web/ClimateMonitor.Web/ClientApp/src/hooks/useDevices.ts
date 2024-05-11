@@ -6,7 +6,7 @@ export const useDevices = () => {
   const [devices, setDevices] = useState<DeviceModel[]>();
 
   useEffect(() => {
-    axios.get("https://localhost:7248/Sensors/devices").then((response) => {
+    axios.get("/sensors/devices").then((response) => {
       setDevices(response.data);
     });
   }, []);
