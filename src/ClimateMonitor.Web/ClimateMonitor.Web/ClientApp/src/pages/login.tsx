@@ -3,8 +3,10 @@ import { Box, Button, Grid, TextField } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import * as yup from "yup";
+import { ErrorToast } from '../components/shared/toast';
 import { useLogin } from "../hooks/useLogin";
 import { LoginForm } from "../models/loginForm";
+import { ToastContainer } from 'react-toastify';
 
 const schema = yup.object({
     username: yup.string().required(),
@@ -13,7 +15,7 @@ const schema = yup.object({
 
 export function Login() {
     const navigate = useNavigate();
-    const { handleSubmit, watch, control } = useForm<LoginForm>({
+    const { handleSubmit, control } = useForm<LoginForm>({
         defaultValues: {
             username: "",
             password: ""
@@ -21,14 +23,19 @@ export function Login() {
         resolver: yupResolver(schema)
     });
 
-    const { login } = useLogin();
+    const login = useLogin();
 
-    const onSubmit = () => {
-        login(watch());
-        navigate("/");
+    const onSubmit = async (form: LoginForm) => {
+        const success = await login(form);
+        if (success) {
+            navigate("/");
+            return;
+        }
+        ErrorToast({ message: "Provided credentials are incorrect. Please check your username and password." })
     }
     return (
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+            <ToastContainer />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Grid
                     container
@@ -57,7 +64,6 @@ export function Login() {
                         <Button type="submit">Login</Button>
                     </Grid>
                 </Grid>
-
             </form>
         </Box>
     )

@@ -21,7 +21,11 @@ public static class AuthenticationExtensions
             options.DefaultAuthenticateScheme = BearerOrCookieSchema;
             options.DefaultChallengeScheme = BearerOrCookieSchema;
         })
-            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
+            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            {
+                options.LoginPath = "/login";
+                options.LogoutPath = "/login";
+            })
             .AddBearerToken(IdentityConstants.BearerScheme, options => options.Events = new()
             {
                 OnMessageReceived = context =>

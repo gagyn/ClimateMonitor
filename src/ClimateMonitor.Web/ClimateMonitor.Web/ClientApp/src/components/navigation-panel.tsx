@@ -19,7 +19,8 @@ export function NavigationPanel({ myUser }: NavigationPanelProps) {
     temperature: number;
   };
   const locations: Location[] = [];
-
+  const loginActionName = !!myUser ? "Logout" : "Login";
+  console.log(myUser)
   return (
     <Drawer
       variant="permanent"
@@ -35,7 +36,7 @@ export function NavigationPanel({ myUser }: NavigationPanelProps) {
             <ListItemIcon>
               <SettingsIcon />
             </ListItemIcon>
-            <ListItemText primary={<Link to="/login">{!myUser ? "Login" : "Logout"}</Link>} />
+            <ListItemText primary={<Link to={`/login`}>{loginActionName}</Link>} />
           </ListItemButton>
         </ListItem>
         <ListItem key="settings" disablePadding>

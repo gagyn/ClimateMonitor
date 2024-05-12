@@ -1,20 +1,22 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { LoginForm } from "../models/loginForm";
+import { useLogout } from "./useLogout";
+import { useEffect } from "react";
 
 export const useLogin = () => {
-  const [loginFrom, setLoginForm] = useState<LoginForm>();
-  useEffect(() => {
-    if (!loginFrom?.username || !loginFrom.password) return;
+  const logout = useLogout();
+  useEffect(() => { logout() }, [logout]);
 
-    axios.post(`/users/login?useCookies=true`, loginFrom, {
+  return async (login: LoginForm) => {
+    if (!login?.username || !login.password) {
+      return false;
+    }
+    const response = await axios.post(`/users/login?useCookies=true`, login, {
       headers: {
         'Content-Type': 'application/json'
-      }
+      },
+      validateStatus: _ => true
     });
-  }, [loginFrom]);
-
-  return {
-    login: (login: LoginForm) => setLoginForm(login)
-  };
+    return response.status === 200;
+  }
 }

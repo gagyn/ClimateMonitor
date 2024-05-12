@@ -5,6 +5,7 @@ import { NavigationPanel } from "../components/navigation-panel";
 import { useDevices } from "../hooks/useDevices";
 import { useMyUser } from "../hooks/useMyUser";
 import { Devices } from "../components/settings/devices";
+import { ToastContainer } from "react-toastify";
 
 export function Settings() {
   const devices = useDevices();
@@ -12,6 +13,7 @@ export function Settings() {
   return (
     <>
       <Box sx={{ diplay: "flex" }}>
+        <ToastContainer />
         <CssBaseline />
         <NavigationPanel myUser={user} />
       </Box>

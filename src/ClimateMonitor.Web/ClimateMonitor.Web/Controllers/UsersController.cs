@@ -33,6 +33,9 @@ public class UsersController(IMediator mediator) : ControllerBase
         return SignIn(claimsPrincipal, authenticationScheme: scheme);
     }
 
+    [HttpGet("logout")]
+    public IActionResult Logout() => SignOut(CookieAuthenticationDefaults.AuthenticationScheme);
+
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh([FromBody] RefreshUserTokenQuery query)
     {
