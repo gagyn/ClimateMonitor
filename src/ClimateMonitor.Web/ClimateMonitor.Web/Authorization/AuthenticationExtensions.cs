@@ -23,8 +23,15 @@ public static class AuthenticationExtensions
         })
             .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
             {
-                options.LoginPath = "/login";
                 options.LogoutPath = "/login";
+                options.Events = new()
+                {
+                    OnRedirectToLogin = context =>
+                    {
+                        context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                        return Task.CompletedTask;
+                    }
+                };
             })
             .AddBearerToken(IdentityConstants.BearerScheme, options => options.Events = new()
             {

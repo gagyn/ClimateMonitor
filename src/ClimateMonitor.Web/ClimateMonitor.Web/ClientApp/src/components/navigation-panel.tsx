@@ -20,7 +20,6 @@ export function NavigationPanel({ myUser }: NavigationPanelProps) {
   };
   const locations: Location[] = [];
   const loginActionName = !!myUser ? "Logout" : "Login";
-  console.log(myUser)
   return (
     <Drawer
       variant="permanent"
