@@ -9,9 +9,14 @@ type DevicesProps = {
 
 export function Devices({ devices }: DevicesProps) {
     return (
-        <Grid>
+        <Grid container direction="column" spacing={1}>
             {devices?.map((x) => (
-                <Button variant="contained" component={Link} to={`/settings/device/${x.deviceId}`}>Edit device {x.deviceId}</Button>
+                <Grid item key={x.deviceId}>
+                    <Button variant="contained" component={Link} to={`/settings/device/${x.deviceId}`}>
+                        Edit device {x.deviceId}
+                    </Button>
+                </Grid>
             ))}
-        </Grid>)
+        </Grid>
+    )
 }

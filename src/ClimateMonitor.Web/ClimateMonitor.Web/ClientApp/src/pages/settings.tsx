@@ -11,7 +11,7 @@ export function Settings() {
   const devices = useDevices();
   const user = useMyUser();
   return (
-    <>
+    <Box sx={{ display: "flex" }}>
       <Box sx={{ diplay: "flex" }}>
         <ToastContainer />
         <CssBaseline />
@@ -23,6 +23,6 @@ export function Settings() {
           <Devices devices={devices ?? []} />
         </Container>
       </Box>
-    </>
+    </Box>
   );
 }
