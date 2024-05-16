@@ -18,5 +18,5 @@ export function Devices({ devices }: DevicesProps) {
                 </Grid>
             ))}
         </Grid>
-    )
+    );
 }

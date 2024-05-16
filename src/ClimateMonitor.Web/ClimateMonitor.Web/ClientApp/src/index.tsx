@@ -7,6 +7,7 @@ import { Settings } from "./pages/settings";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ErrorPage } from "./pages/error-page";
 import { Login } from "./pages/login";
+import { Device } from "./pages/device";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
     path: "/settings",
     element: <Settings />,
   },
+  {
+    path: "/device/:id",
+    element: <Device />
+  }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
